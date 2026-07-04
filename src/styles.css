@@ -1084,7 +1084,66 @@
     display: block;
     inline-size: 100%;
     block-size: auto;
-    max-block-size: 5.9rem;
+    max-block-size: 6.45rem;
+  }
+
+  .sky-dial-wash {
+    fill: url(#sky-dial-wash);
+  }
+
+  .sky-horizon,
+  .sky-meridian,
+  .sky-altitude-guides path,
+  .sky-track-ticks line,
+  .sky-cardinal-ticks line {
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .sky-horizon {
+    stroke: rgba(16, 17, 18, 0.34);
+    stroke-width: 0.74;
+  }
+
+  .sky-meridian {
+    stroke: rgba(16, 17, 18, 0.18);
+    stroke-width: 0.62;
+    stroke-dasharray: 1.2 4.2;
+  }
+
+  .sky-altitude-guides path {
+    stroke: rgba(16, 17, 18, 0.1);
+    stroke-width: 0.54;
+    stroke-dasharray: 2 5;
+  }
+
+  .sky-track-ticks line {
+    stroke: rgba(16, 17, 18, 0.28);
+    stroke-width: 0.58;
+    stroke-linecap: round;
+  }
+
+  .sky-cardinal-ticks line {
+    stroke: rgba(16, 17, 18, 0.46);
+    stroke-width: 0.72;
+    stroke-linecap: round;
+  }
+
+  .sky-star-map {
+    opacity: 0.76;
+  }
+
+  .sky-star-map path {
+    fill: none;
+    stroke: rgba(31, 61, 115, 0.28);
+    stroke-width: 0.5;
+    stroke-dasharray: 1.2 3.8;
+  }
+
+  .sky-star-map circle {
+    fill: rgba(31, 61, 115, 0.62);
+    stroke: rgba(244, 240, 228, 0.65);
+    stroke-width: 0.22;
   }
 
   .sky-ground {
@@ -1104,6 +1163,14 @@
     fill: none;
     stroke: rgba(16, 17, 18, 0.34);
     stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .sky-reed {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.26);
+    stroke-width: 0.8;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
@@ -1145,6 +1212,10 @@
 
   .sky-moon-glyph path {
     fill: rgba(244, 240, 228, 0.64);
+  }
+
+  .sky-moon-glyph {
+    filter: drop-shadow(0 0 7px rgba(31, 61, 115, 0.24));
   }
 
   .sky-dial text {
@@ -1852,7 +1923,8 @@
 
     h1 {
       writing-mode: horizontal-tb;
-      font-size: clamp(3rem, 18vw, 5rem);
+      font-size: 4.4rem;
+      max-inline-size: 100%;
     }
 
     .subtitle {
@@ -1958,12 +2030,30 @@
       grid-template-columns: 1fr;
     }
 
+    h1 {
+      font-size: 3.35rem;
+      line-height: 1;
+    }
+
+    .subtitle {
+      display: inline-block;
+      font-size: 0.98rem;
+      max-inline-size: 100%;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .subtitle::before,
+    .subtitle::after {
+      display: none;
+    }
+
     .location-controls {
       grid-template-columns: 1fr;
     }
 
     .clock-stage {
-      inline-size: min(100%, 21rem);
+      inline-size: min(100%, 19rem);
     }
 
     .flip-clock {

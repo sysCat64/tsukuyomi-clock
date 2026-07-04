@@ -17,6 +17,16 @@ type AstroPanelProps = {
   location: LocationPreset;
 };
 
+const SKY_TICKS = Array.from({ length: 13 }, (_, index) => index / 12);
+const ALTITUDE_GUIDES = [0.22, 0.46, 0.7];
+const STAR_POINTS = [
+  { x: 42, y: 34, r: 0.9 },
+  { x: 58, y: 24, r: 0.72 },
+  { x: 76, y: 31, r: 0.82 },
+  { x: 128, y: 28, r: 0.76 },
+  { x: 148, y: 38, r: 0.68 },
+];
+
 export function DatePanel({ clock }: DatePanelProps) {
   return (
     <section className="date-panel" aria-labelledby="date-title">
@@ -126,14 +136,54 @@ export function AstroPanel({ astronomy, location }: AstroPanelProps) {
 function SkyDial({ astronomy }: { astronomy: AstronomyState }) {
   const sunX = 30 + astronomy.daylightProgress * 140;
   const sunY = 72 - Math.sin(Math.PI * astronomy.daylightProgress) * 42;
-  const moonPhaseX = 30 + astronomy.moonIllumination * 140;
-  const moonPhaseY = 92 - Math.sin(Math.PI * astronomy.moonIllumination) * 28;
+  const moonTrackProgress = normalizeSkyProgress(astronomy.moonAzimuth / 360);
+  const moonX = 30 + moonTrackProgress * 140;
+  const moonY = altitudeToSkyY(astronomy.moonAltitude);
 
   return (
-    <figure className="sky-dial" aria-label="太陽と月の軌道図">
+    <figure
+      className="sky-dial"
+      aria-label={`太陽高度${astronomy.sunAltitude.toFixed(1)}度、月高度${astronomy.moonAltitude.toFixed(1)}度の軌道図`}
+    >
       <svg viewBox="0 0 200 118" role="img" aria-label="太陽軌道と月の満ち欠け">
+        <defs>
+          <radialGradient id="sky-dial-wash" cx="52%" cy="74%" r="70%">
+            <stop offset="0%" stopColor="rgba(16, 17, 18, 0.14)" />
+            <stop offset="52%" stopColor="rgba(16, 17, 18, 0.04)" />
+            <stop offset="100%" stopColor="rgba(16, 17, 18, 0)" />
+          </radialGradient>
+        </defs>
+        <ellipse className="sky-dial-wash" cx="102" cy="86" rx="83" ry="24" />
+        <path className="sky-horizon" d="M 20 91 H 182" />
+        <path className="sky-meridian" d="M 100 91 C 99 65 100 40 101 16" />
+        <g className="sky-altitude-guides" aria-hidden="true">
+          {ALTITUDE_GUIDES.map((guide) => (
+            <path
+              key={guide}
+              d={`M ${26 + guide * 24} ${91 - guide * 54} C ${66} ${
+                44 - guide * 18
+              } ${134} ${44 - guide * 18} ${174 - guide * 24} ${91 - guide * 54}`}
+            />
+          ))}
+        </g>
+        <g className="sky-track-ticks" aria-hidden="true">
+          {SKY_TICKS.map((point) => {
+            const x = 26 + point * 148;
+            const y = 83 - Math.sin(Math.PI * point) * 65;
+            return <line key={point} x1={x} y1={y - 2.2} x2={x} y2={y + 2.2} />;
+          })}
+        </g>
+        <g className="sky-star-map" aria-hidden="true">
+          <path d="M 42 34 L 58 24 L 76 31" />
+          <path d="M 128 28 L 148 38" />
+          {STAR_POINTS.map((point) => (
+            <circle key={`${point.x}-${point.y}`} cx={point.x} cy={point.y} r={point.r} />
+          ))}
+        </g>
         <path className="sky-ground" d="M 22 97 C 54 82 84 91 112 84 C 142 76 164 82 180 96" />
         <path className="sky-ink-island" d="M 25 94 C 48 84 70 90 92 84 C 121 76 153 82 178 95 C 132 105 73 106 25 94 Z" />
+        <path className="sky-reed left" d="M 42 93 C 39 84 37 77 35 68 M 44 94 C 44 84 47 76 51 68" />
+        <path className="sky-reed right" d="M 153 92 C 154 82 157 75 164 67 M 158 94 C 163 85 169 80 176 76" />
         <path className="sky-tree" d="M 139 82 C 139 74 139 69 141 62 M 137 73 C 132 69 128 66 123 64 M 141 72 C 147 67 153 65 160 64" />
         <path className="sky-sun-track" d="M 26 83 C 62 18 136 18 174 83" pathLength="1" />
         <path className="sky-moon-track" d="M 31 92 C 67 45 132 45 169 92" pathLength="1" />
@@ -150,9 +200,14 @@ function SkyDial({ astronomy }: { astronomy: AstronomyState }) {
           ))}
           <circle className="sky-sun" r="6" />
         </g>
-        <g className="sky-moon-glyph" transform={`translate(${moonPhaseX} ${moonPhaseY})`}>
+        <g className="sky-moon-glyph" transform={`translate(${moonX} ${moonY})`}>
           <circle className="sky-moon" r="6" />
           <path d="M 1 -6 A 6 6 0 1 0 1 6 A 3.6 6 0 1 1 1 -6" />
+        </g>
+        <g className="sky-cardinal-ticks" aria-hidden="true">
+          <line x1="30" y1="95" x2="30" y2="100" />
+          <line x1="100" y1="93" x2="100" y2="101" />
+          <line x1="170" y1="95" x2="170" y2="100" />
         </g>
         <text x="24" y="109">東</text>
         <text x="169" y="109">西</text>
@@ -160,6 +215,15 @@ function SkyDial({ astronomy }: { astronomy: AstronomyState }) {
       </svg>
     </figure>
   );
+}
+
+function altitudeToSkyY(altitude: number): number {
+  const normalizedAltitude = Math.min(1, Math.max(0, (altitude + 10) / 90));
+  return 92 - normalizedAltitude * 62;
+}
+
+function normalizeSkyProgress(value: number): number {
+  return ((value % 1) + 1) % 1;
 }
 
 function SeasonMotif({ progress }: { progress: number }) {
