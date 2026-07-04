@@ -18,7 +18,7 @@ export function LocationControls({
 }: LocationControlsProps) {
   return (
     <section className="location-controls" aria-labelledby="location-title">
-      <div>
+      <div className="location-select-wrap">
         <p className="control-label" id="location-title">
           観測地
         </p>
@@ -43,7 +43,25 @@ export function LocationControls({
           {location.isCustom ? <option value="browser-location">現在地</option> : null}
         </select>
       </div>
-      <button type="button" onClick={onUseCurrentLocation} disabled={isLocating}>
+      <div className="preset-grid" aria-label="観測地プリセット">
+        {LOCATION_PRESETS.map((preset) => (
+          <button
+            key={preset.id}
+            type="button"
+            className="preset-chip"
+            aria-pressed={!location.isCustom && location.id === preset.id}
+            onClick={() => onPresetChange(preset)}
+          >
+            {preset.labelJa}
+          </button>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="locate-button"
+        onClick={onUseCurrentLocation}
+        disabled={isLocating}
+      >
         <span aria-hidden="true">◎</span>
         {isLocating ? "測位中" : "現在地"}
       </button>

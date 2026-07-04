@@ -206,6 +206,18 @@ export function AnalogClock({
           />
         </g>
 
+        <g className="moon-lens" opacity={0.34 + astronomy.moonIllumination * 0.52}>
+          <circle className="moon-lens-glow" cx="235" cy="218" r="38" />
+          <circle className="moon-lens-frame" cx="235" cy="218" r="32" />
+          <path
+            className="moon-lens-disc"
+            d="M 236 188 A 30 30 0 1 0 236 248 A 17 30 0 1 1 236 188"
+          />
+          <path className="moon-lens-haze" d="M 214 226 C 229 215 246 213 263 221" />
+          <path className="moon-lens-branch" d="M 218 235 C 229 226 239 225 251 232" />
+          <circle className="moon-lens-blossom" cx="252" cy="231" r="2.6" />
+        </g>
+
         <g ref={gearRef} className="gear-ring">
           <circle className="gear-smoke" cx="160" cy="166" r="76" fill="url(#gear-smoke)" />
           <path className="gear-bridge" d="M 96 170 C 126 136 189 137 224 168" />
