@@ -18,6 +18,8 @@ import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 import { useRehearsal } from "./hooks/useRehearsal";
 
 const EMPTY_MOTION_EVENTS: MotionEvent[] = [];
+const ORBIT_BEADS = [0.16, 0.34, 0.52, 0.7, 0.88];
+const SUN_RAYS = Array.from({ length: 18 }, (_, index) => index);
 
 export default function App() {
   const systemReducedMotion = usePrefersReducedMotion();
@@ -108,6 +110,7 @@ export default function App() {
           <i className="wash-band lower-haze" />
           <i className="wash-band side-haze" />
         </div>
+        <CompositionOrbit progress={astronomy.daylightProgress} />
         <div className="mechanism-rail" aria-hidden="true">
           {Array.from({ length: 7 }, (_, index) => (
             <i key={index} />
@@ -142,5 +145,60 @@ export default function App() {
       <RehearsalPanel state={rehearsal.state} actions={rehearsal.actions} />
       {/* v1 dependencies stay SVG/Canvas-native. Future candidates: Three.js for a 3D globe, D3.js for dense calendar charts, and p5.js for generative brush studies. */}
     </main>
+  );
+}
+
+function CompositionOrbit({ progress }: { progress: number }) {
+  const clampedProgress = Math.min(1, Math.max(0, progress));
+  const visualProgress = 0.2 + clampedProgress * 0.62;
+  const sunX = 760 + visualProgress * 320;
+  const sunY = 236 - Math.sin(Math.PI * visualProgress) * 202;
+
+  return (
+    <svg
+      className="composition-orbit"
+      viewBox="0 0 1280 680"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        className="composition-orbit-path primary"
+        pathLength="1"
+        strokeDasharray={`${Math.max(0.08, visualProgress)} 1`}
+        d="M 456 282 C 650 26 1006 18 1168 284"
+      />
+      <path
+        className="composition-orbit-path secondary"
+        d="M 520 326 C 700 88 1014 83 1192 320"
+      />
+      <path
+        className="composition-orbit-path trailing"
+        d="M 806 31 C 1042 10 1230 190 1194 492"
+      />
+      {ORBIT_BEADS.map((point) => (
+        <circle
+          key={point}
+          className="composition-orbit-bead"
+          cx={456 + point * 712}
+          cy={282 - Math.sin(Math.PI * point) * 254}
+          r={point <= visualProgress ? 3.2 : 2}
+          opacity={point <= visualProgress ? 0.86 : 0.32}
+        />
+      ))}
+      <g className="composition-sun" transform={`translate(${sunX} ${sunY})`}>
+        {SUN_RAYS.map((index) => (
+          <line
+            key={index}
+            x1="0"
+            y1="-17"
+            x2="0"
+            y2={index % 2 === 0 ? "-29" : "-24"}
+            transform={`rotate(${index * 20})`}
+          />
+        ))}
+        <circle className="composition-sun-orb" r="18" />
+        <circle className="composition-sun-core" r="9" />
+      </g>
+    </svg>
   );
 }

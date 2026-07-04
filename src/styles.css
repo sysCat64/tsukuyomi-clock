@@ -266,6 +266,71 @@
     background: radial-gradient(ellipse, rgba(16, 17, 18, 0.13), transparent 72%);
   }
 
+  .composition-orbit {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .composition-orbit-path {
+    fill: none;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .composition-orbit-path.primary {
+    stroke: rgba(200, 155, 57, 0.64);
+    stroke-width: 1.15;
+    filter: drop-shadow(0 0 4px rgba(200, 155, 57, 0.2));
+  }
+
+  .composition-orbit-path.secondary {
+    stroke: rgba(200, 155, 57, 0.23);
+    stroke-width: 0.9;
+    stroke-dasharray: 5 7;
+  }
+
+  .composition-orbit-path.trailing {
+    stroke: rgba(200, 155, 57, 0.32);
+    stroke-width: 0.85;
+    stroke-dasharray: 1 10;
+  }
+
+  .composition-orbit-bead {
+    fill: var(--gold);
+    stroke: rgba(244, 240, 228, 0.74);
+    stroke-width: 0.7;
+    filter: drop-shadow(0 0 4px rgba(200, 155, 57, 0.28));
+  }
+
+  .composition-sun {
+    overflow: visible;
+    color: var(--gold);
+    filter: drop-shadow(0 0 10px rgba(200, 155, 57, 0.32));
+  }
+
+  .composition-sun line {
+    stroke: currentColor;
+    stroke-width: 1.35;
+    stroke-linecap: round;
+  }
+
+  .composition-sun-orb {
+    fill: rgba(200, 155, 57, 0.92);
+    stroke: rgba(112, 77, 22, 0.32);
+    stroke-width: 1;
+  }
+
+  .composition-sun-core {
+    fill: rgba(244, 240, 228, 0.35);
+    stroke: rgba(112, 77, 22, 0.34);
+    stroke-width: 0.7;
+  }
+
   .date-panel,
   .clock-stage,
   .right-rail,
@@ -1602,6 +1667,14 @@
       min-block-size: auto;
     }
 
+    .composition-orbit {
+      opacity: 0.26;
+    }
+
+    .composition-sun {
+      display: none;
+    }
+
     .date-panel {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -1700,6 +1773,10 @@
     }
 
     .mechanism-rail {
+      display: none;
+    }
+
+    .composition-orbit {
       display: none;
     }
 
