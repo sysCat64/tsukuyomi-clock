@@ -670,6 +670,102 @@
     font-size: clamp(1.4rem, 3vw, 2rem);
   }
 
+  .rehearsal-panel {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.8fr) minmax(20rem, 1.4fr) minmax(15rem, 1fr);
+    gap: 0.75rem;
+    inline-size: min(100%, 76rem);
+    margin-block-start: 0.55rem;
+    padding: 0.72rem;
+    background:
+      linear-gradient(90deg, rgba(184, 58, 34, 0.05), transparent 2.4rem),
+      rgba(244, 240, 228, 0.76);
+    border-block: 1px solid rgba(16, 17, 18, 0.34);
+    box-shadow: 0 12px 34px rgba(16, 17, 18, 0.14);
+  }
+
+  .rehearsal-head,
+  .rehearsal-row,
+  .rehearsal-selects,
+  .rehearsal-scenarios {
+    min-inline-size: 0;
+  }
+
+  .rehearsal-head {
+    display: grid;
+    align-content: center;
+    gap: 0.22rem;
+    border-inline-start: 0.18rem solid var(--vermilion);
+    padding-inline-start: 0.65rem;
+  }
+
+  .rehearsal-head p,
+  .rehearsal-selects span {
+    margin: 0;
+    color: var(--vermilion);
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    line-height: 1.2;
+  }
+
+  .rehearsal-head time {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.02rem, 1.7vw, 1.3rem);
+    line-height: 1.2;
+  }
+
+  .rehearsal-row,
+  .rehearsal-shifts,
+  .rehearsal-scenarios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+    align-content: center;
+  }
+
+  .rehearsal-primary {
+    align-items: center;
+  }
+
+  .rehearsal-panel button {
+    min-block-size: 2rem;
+    padding: 0.32rem 0.56rem;
+    font-size: 0.82rem;
+  }
+
+  .rehearsal-accent {
+    color: var(--paper);
+    background: var(--vermilion);
+    border-color: rgba(16, 17, 18, 0.4);
+  }
+
+  .rehearsal-selects {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .rehearsal-selects label {
+    display: grid;
+    gap: 0.18rem;
+    min-inline-size: 0;
+  }
+
+  .rehearsal-selects select {
+    min-block-size: 2rem;
+    margin-block-start: 0;
+    padding-block: 0.25rem;
+  }
+
+  .rehearsal-scenarios {
+    grid-column: 1 / -1;
+    border-block-start: 1px solid rgba(16, 17, 18, 0.18);
+    padding-block-start: 0.55rem;
+  }
+
   @media (max-width: 920px) {
     .tsukuyomi-app {
       place-items: start center;
@@ -720,6 +816,10 @@
       grid-template-columns: 1fr;
     }
 
+    .rehearsal-panel {
+      grid-template-columns: 1fr;
+    }
+
     .almanac-panel .metric-list {
       grid-template-columns: 1fr;
     }
@@ -733,6 +833,11 @@
 
     .tsukuyomi-app {
       overflow: hidden;
+    }
+
+    .tsukuyomi-app[data-rehearsal="true"] {
+      align-content: start;
+      overflow: auto;
     }
   }
 
@@ -771,6 +876,14 @@
 
     .flip-unit {
       min-inline-size: 3.35rem;
+    }
+
+    .rehearsal-panel {
+      padding: 0.62rem;
+    }
+
+    .rehearsal-selects {
+      grid-template-columns: 1fr;
     }
 
     .progress-line {
