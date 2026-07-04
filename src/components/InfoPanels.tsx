@@ -75,6 +75,7 @@ export function AstroPanel({ astronomy, location }: AstroPanelProps) {
         <p>{location.labelJa}</p>
         <h2 id="astro-title">日月のからくり</h2>
       </div>
+      <SkyDial astronomy={astronomy} />
       <dl className="metric-grid">
         <div>
           <dt>日の出</dt>
@@ -103,6 +104,28 @@ export function AstroPanel({ astronomy, location }: AstroPanelProps) {
       </dl>
       <ProgressLine label="月の灯り" value={astronomy.moonIllumination} tone="indigo" />
     </section>
+  );
+}
+
+function SkyDial({ astronomy }: { astronomy: AstronomyState }) {
+  const sunX = 30 + astronomy.daylightProgress * 140;
+  const sunY = 72 - Math.sin(Math.PI * astronomy.daylightProgress) * 42;
+  const moonPhaseX = 30 + astronomy.moonIllumination * 140;
+  const moonPhaseY = 92 - Math.sin(Math.PI * astronomy.moonIllumination) * 28;
+
+  return (
+    <figure className="sky-dial" aria-label="太陽と月の軌道図">
+      <svg viewBox="0 0 200 118" role="img" aria-label="太陽軌道と月の満ち欠け">
+        <path className="sky-ground" d="M 22 97 C 54 82 84 91 112 84 C 142 76 164 82 180 96" />
+        <path className="sky-sun-track" d="M 26 83 C 62 18 136 18 174 83" pathLength="1" />
+        <path className="sky-moon-track" d="M 31 92 C 67 45 132 45 169 92" pathLength="1" />
+        <circle className="sky-sun" cx={sunX} cy={sunY} r="6" />
+        <circle className="sky-moon" cx={moonPhaseX} cy={moonPhaseY} r="6" />
+        <text x="24" y="109">東</text>
+        <text x="169" y="109">西</text>
+        <text x="95" y="113">南</text>
+      </svg>
+    </figure>
   );
 }
 

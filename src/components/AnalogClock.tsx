@@ -12,6 +12,24 @@ type AnalogClockProps = {
   reducedMotion: boolean;
 };
 
+type GearSpec = {
+  cx: number;
+  cy: number;
+  r: number;
+  teeth: number;
+  className: string;
+};
+
+const GEARS: GearSpec[] = [
+  { cx: 160, cy: 160, r: 34, teeth: 26, className: "main-gear" },
+  { cx: 126, cy: 154, r: 22, teeth: 20, className: "shadow-gear" },
+  { cx: 194, cy: 148, r: 19, teeth: 18, className: "shadow-gear" },
+  { cx: 142, cy: 198, r: 17, teeth: 16, className: "small-gear" },
+  { cx: 184, cy: 196, r: 24, teeth: 22, className: "shadow-gear" },
+  { cx: 108, cy: 190, r: 13, teeth: 14, className: "small-gear" },
+  { cx: 215, cy: 180, r: 12, teeth: 14, className: "small-gear" },
+];
+
 export function AnalogClock({
   clock,
   astronomy,
@@ -20,7 +38,9 @@ export function AnalogClock({
   reducedMotion,
 }: AnalogClockProps) {
   const gearRef = useRef<SVGGElement | null>(null);
+  const escapementRef = useRef<SVGGElement | null>(null);
   const windowRef = useRef<SVGGElement | null>(null);
+  const moonGateRef = useRef<SVGGElement | null>(null);
   const sealRef = useRef<SVGTextElement | null>(null);
   const angles = getAnalogAngles(clock);
   const sunPathLength = Math.max(0.04, astronomy.daylightProgress);
@@ -31,20 +51,25 @@ export function AnalogClock({
       return;
     }
 
-    gsap.fromTo(
+    const timeline = gsap.timeline();
+    timeline.fromTo(
       gearRef.current,
-      { rotate: -2, transformOrigin: "160px 160px", scale: 0.992 },
-      {
-        rotate: 18,
-        scale: 1.016,
-        duration: 1.1,
-        ease: "sine.inOut",
-      },
+      { rotate: -4, transformOrigin: "160px 160px", scale: 0.988 },
+      { rotate: 14, scale: 1.014, duration: 0.72, ease: "sine.inOut" },
     );
+
+    if (escapementRef.current) {
+      timeline.fromTo(
+        escapementRef.current,
+        { rotate: -7, transformOrigin: "160px 160px" },
+        { rotate: 7, duration: 0.42, yoyo: true, repeat: 1, ease: "power2.inOut" },
+        0,
+      );
+    }
   }, [minutePulse, reducedMotion]);
 
   useEffect(() => {
-    if (!windowRef.current || !sealRef.current || reducedMotion) {
+    if (!windowRef.current || !sealRef.current || !moonGateRef.current || reducedMotion) {
       return;
     }
 
@@ -60,6 +85,12 @@ export function AnalogClock({
         { y: 8, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" },
         "-=0.16",
+      )
+      .fromTo(
+        moonGateRef.current,
+        { rotate: -8, scale: 0.94, transformOrigin: "238px 90px" },
+        { rotate: 0, scale: 1, duration: 0.55, ease: "back.out(1.7)" },
+        "-=0.34",
       )
       .to(windowRef.current, {
         scaleX: 0.88,
@@ -99,9 +130,21 @@ export function AnalogClock({
             <stop offset="0%" stopColor="#90a7c9" stopOpacity="0.64" />
             <stop offset="100%" stopColor="#243f72" stopOpacity="0" />
           </radialGradient>
+          <radialGradient id="gear-smoke" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="#111" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#111" stopOpacity="0" />
+          </radialGradient>
         </defs>
 
         <circle className="enso-shadow" cx="160" cy="160" r="129" />
+        <path
+          className="enso-wash wash-one"
+          d="M 83 72 C 122 34 190 28 238 69 C 279 104 297 171 267 225 C 234 282 153 302 91 264"
+        />
+        <path
+          className="enso-wash wash-two"
+          d="M 53 148 C 62 76 132 34 205 49 C 271 63 302 131 282 198 C 260 270 181 291 112 265 C 70 249 45 204 53 148 Z"
+        />
         <path
           className="enso-ring"
           filter="url(#ink-wobble)"
@@ -119,6 +162,21 @@ export function AnalogClock({
           pathLength="1"
           strokeDasharray={`${sunPathLength} 1`}
         />
+        <path
+          className="sun-arc ghost"
+          d="M 63 218 C 112 105 214 96 273 192"
+          pathLength="1"
+        />
+        {[0.14, 0.34, 0.58, 0.82].map((point) => (
+          <circle
+            key={point}
+            className="sun-bead"
+            cx={56 + 208 * point}
+            cy={205 - Math.sin(Math.PI * point) * 128}
+            r={point <= astronomy.daylightProgress ? 2.2 : 1.4}
+            opacity={point <= astronomy.daylightProgress ? 0.88 : 0.32}
+          />
+        ))}
         <circle
           className="sun-orb"
           cx={56 + 208 * astronomy.daylightProgress}
@@ -126,8 +184,12 @@ export function AnalogClock({
           r="5.2"
         />
 
-        <g className="moon-window" opacity={moonOpacity}>
+        <g ref={moonGateRef} className="moon-window" opacity={moonOpacity}>
           <circle cx="238" cy="90" r="30" fill="url(#moon-glow)" />
+          <circle className="moon-frame" cx="238" cy="90" r="27" />
+          <line className="moon-lattice" x1="220" y1="72" x2="220" y2="108" />
+          <line className="moon-lattice" x1="228" y1="66" x2="228" y2="114" />
+          <line className="moon-lattice" x1="247" y1="66" x2="247" y2="114" />
           <path
             d="M 239 66 A 24 24 0 1 0 239 114 A 14 24 0 1 1 239 66"
             fill="#203c70"
@@ -135,18 +197,30 @@ export function AnalogClock({
         </g>
 
         <g ref={gearRef} className="gear-ring">
-          {Array.from({ length: 24 }, (_, index) => (
+          <circle className="gear-smoke" cx="160" cy="166" r="76" fill="url(#gear-smoke)" />
+          {GEARS.map((gear) => (
+            <Gear key={`${gear.cx}-${gear.cy}`} spec={gear} />
+          ))}
+        </g>
+
+        <g ref={escapementRef} className="escapement">
+          <path d="M 141 131 L 160 160 L 179 131" />
+          <circle cx="160" cy="160" r="11" />
+          <line x1="160" y1="112" x2="160" y2="148" />
+        </g>
+
+        <g className="outer-teeth">
+          {Array.from({ length: 36 }, (_, index) => (
             <rect
               key={index}
-              x="157.7"
-              y="31"
-              width="4.6"
-              height={index % 2 === 0 ? 12 : 7}
-              rx="1.6"
-              transform={`rotate(${index * 15} 160 160)`}
+              x="158.6"
+              y={index % 3 === 0 ? "24" : "29"}
+              width="2.8"
+              height={index % 3 === 0 ? 11 : 6}
+              rx="1"
+              transform={`rotate(${index * 10} 160 160)`}
             />
           ))}
-          <circle cx="160" cy="160" r="8" />
         </g>
 
         <g className="hour-marks">
@@ -187,5 +261,26 @@ export function AnalogClock({
         </text>
       </svg>
     </section>
+  );
+}
+
+function Gear({ spec }: { spec: GearSpec }) {
+  return (
+    <g className={`clock-gear ${spec.className}`}>
+      {Array.from({ length: spec.teeth }, (_, index) => (
+        <rect
+          key={index}
+          x={spec.cx - 1.2}
+          y={spec.cy - spec.r - 5}
+          width="2.4"
+          height="7"
+          rx="0.7"
+          transform={`rotate(${(360 / spec.teeth) * index} ${spec.cx} ${spec.cy})`}
+        />
+      ))}
+      <circle cx={spec.cx} cy={spec.cy} r={spec.r} />
+      <circle cx={spec.cx} cy={spec.cy} r={Math.max(3, spec.r * 0.24)} />
+      <circle cx={spec.cx} cy={spec.cy} r={Math.max(1.8, spec.r * 0.08)} />
+    </g>
   );
 }

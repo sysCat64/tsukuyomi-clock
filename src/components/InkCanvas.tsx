@@ -13,8 +13,18 @@ type Particle = {
   drift: number;
 };
 
+type InkStroke = {
+  x: number;
+  y: number;
+  length: number;
+  bend: number;
+  alpha: number;
+};
+
 export function InkCanvas({ reducedMotion, moonIllumination }: InkCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const particlesRef = useRef<Particle[]>(Array.from({ length: 96 }, () => makeParticle()));
+  const strokesRef = useRef<InkStroke[]>(Array.from({ length: 16 }, () => makeStroke()));
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -29,7 +39,8 @@ export function InkCanvas({ reducedMotion, moonIllumination }: InkCanvasProps) {
 
     let frameId = 0;
     let lastPaint = 0;
-    const particles = Array.from({ length: 72 }, () => makeParticle());
+    const particles = particlesRef.current;
+    const strokes = strokesRef.current;
 
     const resize = () => {
       const ratio = window.devicePixelRatio || 1;
@@ -46,7 +57,8 @@ export function InkCanvas({ reducedMotion, moonIllumination }: InkCanvasProps) {
       context.globalCompositeOperation = "source-over";
 
       drawMist(context, rect.width, rect.height, moonIllumination, timestamp);
-      drawInkBloom(context, rect.width, rect.height);
+      drawInkBloom(context, rect.width, rect.height, timestamp);
+      drawBrushStrokes(context, strokes, rect.width, rect.height, timestamp);
       drawParticles(context, particles, rect.width, rect.height, timestamp);
     };
 
@@ -59,14 +71,15 @@ export function InkCanvas({ reducedMotion, moonIllumination }: InkCanvasProps) {
     };
 
     resize();
-    window.addEventListener("resize", resize);
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
 
     if (!reducedMotion) {
       frameId = window.requestAnimationFrame(animate);
     }
 
     return () => {
-      window.removeEventListener("resize", resize);
+      observer.disconnect();
       window.cancelAnimationFrame(frameId);
     };
   }, [reducedMotion, moonIllumination]);
@@ -99,11 +112,18 @@ function drawMist(
   context.fillRect(0, 0, width, height);
 }
 
-function drawInkBloom(context: CanvasRenderingContext2D, width: number, height: number) {
+function drawInkBloom(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  timestamp: number,
+) {
+  const breath = 0.85 + Math.sin(timestamp / 3600) * 0.15;
   const blooms = [
-    [0.18, 0.18, 0.18, 0.05],
-    [0.82, 0.72, 0.24, 0.045],
-    [0.48, 0.9, 0.34, 0.035],
+    [0.12, 0.22, 0.28, 0.06],
+    [0.78, 0.68, 0.3, 0.05],
+    [0.46, 0.88, 0.38, 0.04],
+    [0.53, 0.36, 0.18, 0.045],
   ];
 
   for (const [x, y, radius, alpha] of blooms) {
@@ -113,7 +133,7 @@ function drawInkBloom(context: CanvasRenderingContext2D, width: number, height: 
       0,
       width * x,
       height * y,
-      Math.min(width, height) * radius,
+      Math.min(width, height) * radius * breath,
     );
     gradient.addColorStop(0, `rgba(13, 14, 15, ${alpha})`);
     gradient.addColorStop(0.68, `rgba(13, 14, 15, ${alpha * 0.32})`);
@@ -121,6 +141,37 @@ function drawInkBloom(context: CanvasRenderingContext2D, width: number, height: 
     context.fillStyle = gradient;
     context.fillRect(0, 0, width, height);
   }
+}
+
+function drawBrushStrokes(
+  context: CanvasRenderingContext2D,
+  strokes: InkStroke[],
+  width: number,
+  height: number,
+  timestamp: number,
+) {
+  context.save();
+  context.globalCompositeOperation = "multiply";
+  context.lineCap = "round";
+
+  for (const stroke of strokes) {
+    const sway = Math.sin(timestamp / 4200 + stroke.bend) * 8;
+    const startX = stroke.x * width;
+    const startY = stroke.y * height;
+    const endX = startX + stroke.length * width;
+    const endY = startY + sway;
+    const controlX = startX + stroke.length * width * 0.48;
+    const controlY = startY + stroke.bend * height * 0.055;
+
+    context.beginPath();
+    context.strokeStyle = `rgba(18, 18, 18, ${stroke.alpha})`;
+    context.lineWidth = Math.max(1, Math.min(width, height) * 0.0025);
+    context.moveTo(startX, startY);
+    context.quadraticCurveTo(controlX, controlY, endX, endY);
+    context.stroke();
+  }
+
+  context.restore();
 }
 
 function drawParticles(
@@ -151,5 +202,15 @@ function makeParticle(): Particle {
     radius: Math.random() * 1.8 + 0.2,
     alpha: Math.random() * 0.07 + 0.015,
     drift: Math.random() * Math.PI * 2,
+  };
+}
+
+function makeStroke(): InkStroke {
+  return {
+    x: Math.random() * 0.9,
+    y: Math.random() * 0.88 + 0.05,
+    length: Math.random() * 0.18 + 0.08,
+    bend: Math.random() * 2 - 1,
+    alpha: Math.random() * 0.035 + 0.012,
   };
 }
