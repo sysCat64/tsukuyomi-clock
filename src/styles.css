@@ -1379,6 +1379,7 @@
       #171716;
     border: 1px solid rgba(16, 17, 18, 0.76);
     border-radius: 3px;
+    overflow: visible;
     perspective: 900px;
     box-shadow:
       inset 0 0 0 1px rgba(250, 247, 236, 0.12),
@@ -1404,6 +1405,161 @@
 
   .flip-clock::after {
     inset-inline-end: -1.2rem;
+  }
+
+  .flip-mechanism-chain {
+    position: absolute;
+    inset-block: 0.16rem;
+    inline-size: 4.8rem;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.88;
+  }
+
+  .flip-mechanism-chain.left {
+    inset-inline-start: -0.68rem;
+  }
+
+  .flip-mechanism-chain.right {
+    inset-inline-end: -0.68rem;
+  }
+
+  .flip-mechanism-chain i {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, rgba(200, 155, 57, 0.95) 0 11%, rgba(16, 17, 18, 0.9) 12% 23%, transparent 24%),
+      repeating-conic-gradient(from 6deg, rgba(16, 17, 18, 0.92) 0 8deg, rgba(244, 240, 228, 0.38) 8deg 15deg, rgba(16, 17, 18, 0.92) 15deg 23deg);
+    border: 1px solid rgba(200, 155, 57, 0.38);
+    box-shadow:
+      inset 0 0 0 1px rgba(16, 17, 18, 0.52),
+      0 0 8px rgba(0, 0, 0, 0.22);
+  }
+
+  .flip-mechanism-chain.left i:nth-child(1),
+  .flip-mechanism-chain.right i:nth-child(1) {
+    inline-size: 2.35rem;
+    block-size: 2.35rem;
+    inset-block-start: 0.3rem;
+  }
+
+  .flip-mechanism-chain.left i:nth-child(2),
+  .flip-mechanism-chain.right i:nth-child(2) {
+    inline-size: 1.7rem;
+    block-size: 1.7rem;
+    inset-block-start: 2.2rem;
+  }
+
+  .flip-mechanism-chain.left i:nth-child(3),
+  .flip-mechanism-chain.right i:nth-child(3) {
+    inline-size: 2.85rem;
+    block-size: 2.85rem;
+    inset-block-end: 0.2rem;
+  }
+
+  .flip-mechanism-chain.left i:nth-child(4),
+  .flip-mechanism-chain.right i:nth-child(4) {
+    inline-size: 1.15rem;
+    block-size: 1.15rem;
+    inset-block-end: 2.1rem;
+  }
+
+  .flip-mechanism-chain.left i:nth-child(5),
+  .flip-mechanism-chain.right i:nth-child(5) {
+    inline-size: 0.84rem;
+    block-size: 0.84rem;
+    inset-block-start: 50%;
+  }
+
+  .flip-mechanism-chain.left i {
+    inset-inline-start: 0;
+  }
+
+  .flip-mechanism-chain.left i:nth-child(2),
+  .flip-mechanism-chain.left i:nth-child(4),
+  .flip-mechanism-chain.left i:nth-child(5) {
+    inset-inline-start: 2.02rem;
+  }
+
+  .flip-mechanism-chain.right i {
+    inset-inline-end: 0;
+  }
+
+  .flip-mechanism-chain.right i:nth-child(2),
+  .flip-mechanism-chain.right i:nth-child(4),
+  .flip-mechanism-chain.right i:nth-child(5) {
+    inset-inline-end: 2.02rem;
+  }
+
+  .flip-botanical-sprig {
+    position: absolute;
+    inline-size: 8.1rem;
+    block-size: auto;
+    inset-block-end: -1.72rem;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+    opacity: 0.78;
+    filter: drop-shadow(0 3px 3px rgba(16, 17, 18, 0.16));
+  }
+
+  .flip-botanical-sprig.left {
+    inset-inline-start: -0.8rem;
+  }
+
+  .flip-botanical-sprig.right {
+    inset-inline-end: -0.8rem;
+  }
+
+  .sprig-stem {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.68);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .sprig-stem.thin {
+    stroke-width: 1.2;
+    opacity: 0.76;
+  }
+
+  .sprig-leaf {
+    fill: rgba(111, 143, 79, 0.32);
+    stroke: rgba(16, 17, 18, 0.42);
+    stroke-width: 0.9;
+  }
+
+  .sprig-leaf.alt {
+    fill: rgba(111, 143, 79, 0.26);
+  }
+
+  .sprig-blossom {
+    fill: rgba(201, 134, 145, 0.58);
+    stroke: rgba(16, 17, 18, 0.34);
+    stroke-width: 0.45;
+  }
+
+  .sprig-blossom.vermilion {
+    fill: rgba(184, 58, 34, 0.74);
+  }
+
+  .flip-vermilion-knot {
+    position: absolute;
+    inset-block-end: -1.38rem;
+    inset-inline-start: 50%;
+    inline-size: 1.4rem;
+    block-size: 1.4rem;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, rgba(244, 240, 228, 0.95) 0 10%, transparent 11%),
+      repeating-conic-gradient(from 7deg, var(--vermilion) 0 9deg, transparent 9deg 18deg);
+    border: 1px solid rgba(184, 58, 34, 0.5);
+    box-shadow: 0 0 0 1px rgba(244, 240, 228, 0.6), 0 3px 6px rgba(16, 17, 18, 0.14);
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 2;
   }
 
   .flip-frame-labels {
@@ -1512,6 +1668,7 @@
     min-inline-size: clamp(4rem, 7vw, 5.35rem);
     min-block-size: clamp(3.55rem, 5.6vw, 4.35rem);
     color: var(--vermilion);
+    z-index: 2;
   }
 
   .flip-unit::before {
@@ -1552,6 +1709,7 @@
     color: rgba(244, 240, 228, 0.58);
     font-family: var(--font-display);
     font-size: clamp(1.4rem, 3vw, 2rem);
+    z-index: 2;
   }
 
   .rehearsal-panel {
@@ -1725,6 +1883,12 @@
     }
 
     .flip-gear-stack {
+      display: none;
+    }
+
+    .flip-mechanism-chain,
+    .flip-botanical-sprig,
+    .flip-vermilion-knot {
       display: none;
     }
 
