@@ -59,6 +59,7 @@ export function InkCanvas({ reducedMotion, moonIllumination }: InkCanvasProps) {
       drawMist(context, rect.width, rect.height, moonIllumination, timestamp);
       drawInkMargins(context, rect.width, rect.height, timestamp);
       drawInkBloom(context, rect.width, rect.height, timestamp);
+      drawSeasonGround(context, rect.width, rect.height, timestamp);
       drawBrushStrokes(context, strokes, rect.width, rect.height, timestamp);
       drawParticles(context, particles, rect.width, rect.height, timestamp);
     };
@@ -153,6 +154,54 @@ function drawInkMargins(
   rightMist.addColorStop(1, "rgba(31, 61, 115, 0)");
   context.fillStyle = rightMist;
   context.fillRect(0, 0, width, height);
+}
+
+function drawSeasonGround(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  timestamp: number,
+) {
+  const sway = Math.sin(timestamp / 3900) * 4;
+
+  context.save();
+  context.globalCompositeOperation = "multiply";
+  context.lineCap = "round";
+  context.lineJoin = "round";
+
+  const ground = context.createLinearGradient(0, height * 0.76, 0, height);
+  ground.addColorStop(0, "rgba(13, 14, 15, 0)");
+  ground.addColorStop(0.72, "rgba(13, 14, 15, 0.06)");
+  ground.addColorStop(1, "rgba(13, 14, 15, 0.12)");
+  context.fillStyle = ground;
+  context.fillRect(0, height * 0.72, width, height * 0.28);
+
+  context.strokeStyle = "rgba(16, 17, 18, 0.08)";
+  context.lineWidth = Math.max(1.2, Math.min(width, height) * 0.003);
+
+  const tufts = [
+    [0.12, 0.94, -0.06, -0.2],
+    [0.16, 0.96, 0.03, -0.18],
+    [0.79, 0.93, -0.04, -0.16],
+    [0.84, 0.95, 0.05, -0.22],
+    [0.9, 0.94, -0.03, -0.18],
+  ];
+
+  for (const [x, y, dx, dy] of tufts) {
+    const startX = width * x;
+    const startY = height * y;
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.quadraticCurveTo(
+      startX + width * dx * 0.52 + sway,
+      startY + height * dy * 0.45,
+      startX + width * dx,
+      startY + height * dy,
+    );
+    context.stroke();
+  }
+
+  context.restore();
 }
 
 function drawInkBloom(

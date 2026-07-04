@@ -44,6 +44,8 @@ export function AnalogClock({
   const sealRef = useRef<SVGTextElement | null>(null);
   const angles = getAnalogAngles(clock);
   const sunPathLength = Math.max(0.04, astronomy.daylightProgress);
+  const sunX = 56 + 208 * astronomy.daylightProgress;
+  const sunY = 205 - Math.sin(Math.PI * astronomy.daylightProgress) * 128;
   const moonOpacity = 0.25 + astronomy.moonIllumination * 0.55;
 
   useEffect(() => {
@@ -187,12 +189,20 @@ export function AnalogClock({
             opacity={point <= astronomy.daylightProgress ? 0.88 : 0.32}
           />
         ))}
-        <circle
-          className="sun-orb"
-          cx={56 + 208 * astronomy.daylightProgress}
-          cy={205 - Math.sin(Math.PI * astronomy.daylightProgress) * 128}
-          r="5.2"
-        />
+        <g className="sun-glyph" transform={`translate(${sunX} ${sunY})`}>
+          {Array.from({ length: 12 }, (_, index) => (
+            <line
+              key={index}
+              x1="0"
+              y1="-7"
+              x2="0"
+              y2="-12"
+              transform={`rotate(${index * 30})`}
+            />
+          ))}
+          <circle className="sun-orb" r="5.2" />
+          <circle className="sun-core" r="2.2" />
+        </g>
 
         <g ref={moonGateRef} className="moon-window" opacity={moonOpacity}>
           <circle cx="238" cy="90" r="30" fill="url(#moon-glow)" />

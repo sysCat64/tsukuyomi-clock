@@ -48,20 +48,23 @@ export function AlmanacPanel({ almanac }: AlmanacPanelProps) {
         <p>暦</p>
         <h2 id="almanac-title">二十四節気</h2>
       </div>
-      <dl className="metric-list">
-        <div>
-          <dt>いま</dt>
-          <dd>{almanac.solarTerm}</dd>
-        </div>
-        <div>
-          <dt>七十二候</dt>
-          <dd>{almanac.microSeason}</dd>
-        </div>
-        <div>
-          <dt>次候</dt>
-          <dd>{almanac.nextSolarTerm}</dd>
-        </div>
-      </dl>
+      <div className="almanac-body">
+        <dl className="metric-list">
+          <div>
+            <dt>いま</dt>
+            <dd>{almanac.solarTerm}</dd>
+          </div>
+          <div>
+            <dt>七十二候</dt>
+            <dd>{almanac.microSeason}</dd>
+          </div>
+          <div>
+            <dt>次候</dt>
+            <dd>{almanac.nextSolarTerm}</dd>
+          </div>
+        </dl>
+        <SeasonMotif progress={almanac.microSeasonProgress} />
+      </div>
       <ProgressLine label="節気の歩み" value={almanac.solarTermProgress} />
       <ProgressLine label="候の滲み" value={almanac.microSeasonProgress} tone="green" />
     </section>
@@ -124,6 +127,35 @@ function SkyDial({ astronomy }: { astronomy: AstronomyState }) {
         <text x="24" y="109">東</text>
         <text x="169" y="109">西</text>
         <text x="95" y="113">南</text>
+      </svg>
+    </figure>
+  );
+}
+
+function SeasonMotif({ progress }: { progress: number }) {
+  const goldOpacity = 0.34 + progress * 0.36;
+
+  return (
+    <figure className="season-motif" aria-hidden="true">
+      <svg viewBox="0 0 120 108">
+        <path className="season-ring" d="M 92 18 C 115 43 110 84 79 99 C 42 118 6 82 20 44 C 30 16 64 2 92 18 Z" />
+        <path className="season-wash" d="M 16 89 C 31 73 54 74 71 61 C 89 48 98 30 104 14" />
+        <path className="season-stem" d="M 38 90 C 52 67 65 47 74 20" />
+        <path className="season-stem thin" d="M 52 94 C 62 74 82 62 94 42" />
+        <path className="season-leaf" d="M 61 53 C 46 45 40 35 39 25 C 51 29 60 37 61 53 Z" />
+        <path className="season-leaf alt" d="M 72 42 C 84 33 93 32 101 36 C 94 45 85 50 72 42 Z" />
+        <path className="season-leaf pale" d="M 48 74 C 35 69 28 61 27 52 C 38 55 47 62 48 74 Z" />
+        <g className="season-flecks" opacity={goldOpacity}>
+          <circle cx="31" cy="31" r="1.8" />
+          <circle cx="42" cy="22" r="1.2" />
+          <circle cx="85" cy="25" r="1.4" />
+          <circle cx="99" cy="57" r="1.1" />
+          <circle cx="26" cy="75" r="1.2" />
+        </g>
+        <g className="season-seal">
+          <rect x="84" y="82" width="14" height="14" />
+          <path d="M 88 86 H 94 M 88 91 H 94 M 91 85 V 94" />
+        </g>
       </svg>
     </figure>
   );
