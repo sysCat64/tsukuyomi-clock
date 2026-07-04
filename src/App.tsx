@@ -103,6 +103,11 @@ export default function App() {
       />
       <div className="paper-grain" aria-hidden="true" />
       <div className="scroll-frame">
+        <div className="mechanism-rail" aria-hidden="true">
+          {Array.from({ length: 7 }, (_, index) => (
+            <i key={index} />
+          ))}
+        </div>
         <DatePanel clock={clock} />
         <AnalogClock
           clock={clock}

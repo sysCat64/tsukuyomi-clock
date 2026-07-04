@@ -11,6 +11,26 @@ type FlipClockProps = {
 export function FlipClock({ clock, reducedMotion }: FlipClockProps) {
   return (
     <section className="flip-clock" aria-label="パタパタ式デジタル時計">
+      <span className="flip-frame-labels" aria-hidden="true">
+        <span>時</span>
+        <span>分</span>
+        <span>秒</span>
+      </span>
+      <span className="flip-rivets" aria-hidden="true">
+        {Array.from({ length: 8 }, (_, index) => (
+          <i key={index} />
+        ))}
+      </span>
+      <span className="flip-gear-stack left" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </span>
+      <span className="flip-gear-stack right" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </span>
       <FlipUnit value={pad2(clock.hours)} label="時" reducedMotion={reducedMotion} />
       <span className="flip-separator" aria-hidden="true">
         :

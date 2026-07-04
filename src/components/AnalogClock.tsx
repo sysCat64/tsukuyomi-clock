@@ -20,6 +20,15 @@ type GearSpec = {
   className: string;
 };
 
+type InkFleckSpec = {
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+  rotate: number;
+  opacity: number;
+};
+
 const GEARS: GearSpec[] = [
   { cx: 160, cy: 160, r: 34, teeth: 26, className: "main-gear" },
   { cx: 126, cy: 154, r: 22, teeth: 20, className: "shadow-gear" },
@@ -28,6 +37,23 @@ const GEARS: GearSpec[] = [
   { cx: 184, cy: 196, r: 24, teeth: 22, className: "shadow-gear" },
   { cx: 108, cy: 190, r: 13, teeth: 14, className: "small-gear" },
   { cx: 215, cy: 180, r: 12, teeth: 14, className: "small-gear" },
+  { cx: 101, cy: 225, r: 15, teeth: 16, className: "small-gear deep-gear" },
+  { cx: 128, cy: 235, r: 10, teeth: 12, className: "pinion-gear" },
+  { cx: 222, cy: 250, r: 15, teeth: 16, className: "small-gear deep-gear" },
+  { cx: 250, cy: 239, r: 10, teeth: 12, className: "pinion-gear" },
+];
+
+const INK_FLECKS: InkFleckSpec[] = [
+  { cx: 64, cy: 108, rx: 3.8, ry: 1.2, rotate: -23, opacity: 0.36 },
+  { cx: 82, cy: 61, rx: 2.6, ry: 0.9, rotate: 18, opacity: 0.28 },
+  { cx: 104, cy: 284, rx: 4.4, ry: 1.1, rotate: 11, opacity: 0.3 },
+  { cx: 135, cy: 42, rx: 2, ry: 0.8, rotate: -7, opacity: 0.22 },
+  { cx: 199, cy: 39, rx: 3.5, ry: 1.1, rotate: 36, opacity: 0.26 },
+  { cx: 267, cy: 92, rx: 3.1, ry: 1, rotate: -28, opacity: 0.3 },
+  { cx: 286, cy: 168, rx: 4.8, ry: 1.2, rotate: 70, opacity: 0.32 },
+  { cx: 260, cy: 276, rx: 3.2, ry: 1, rotate: -18, opacity: 0.26 },
+  { cx: 46, cy: 201, rx: 3.4, ry: 1, rotate: 62, opacity: 0.25 },
+  { cx: 185, cy: 289, rx: 2.6, ry: 0.9, rotate: 6, opacity: 0.23 },
 ];
 
 export function AnalogClock({
@@ -162,6 +188,22 @@ export function AnalogClock({
           d="M 69 78 C 91 54 121 40 157 38"
           pathLength="1"
         />
+        <g className="enso-splatter" aria-hidden="true">
+          {INK_FLECKS.map((fleck) => (
+            <ellipse
+              key={`${fleck.cx}-${fleck.cy}`}
+              cx={fleck.cx}
+              cy={fleck.cy}
+              rx={fleck.rx}
+              ry={fleck.ry}
+              opacity={fleck.opacity}
+              transform={`rotate(${fleck.rotate} ${fleck.cx} ${fleck.cy})`}
+            />
+          ))}
+          <path d="M 50 124 C 58 122 63 126 69 124" />
+          <path d="M 244 52 C 251 58 258 60 268 57" />
+          <path d="M 72 252 C 82 258 91 260 102 257" />
+        </g>
 
         <path
           className="sun-arc"
@@ -214,6 +256,9 @@ export function AnalogClock({
             d="M 239 66 A 24 24 0 1 0 239 114 A 14 24 0 1 1 239 66"
             fill="#203c70"
           />
+          <text className="moon-window-label" x="238" y="129" textAnchor="middle">
+            月齢
+          </text>
         </g>
 
         <g className="moon-lens" opacity={0.34 + astronomy.moonIllumination * 0.52}>
@@ -226,12 +271,41 @@ export function AnalogClock({
           <path className="moon-lens-haze" d="M 214 226 C 229 215 246 213 263 221" />
           <path className="moon-lens-branch" d="M 218 235 C 229 226 239 225 251 232" />
           <circle className="moon-lens-blossom" cx="252" cy="231" r="2.6" />
+          <g className="moon-lens-ticks" aria-hidden="true">
+            {Array.from({ length: 18 }, (_, index) => (
+              <line
+                key={index}
+                x1="235"
+                y1="183"
+                x2="235"
+                y2={index % 3 === 0 ? "190" : "187"}
+                transform={`rotate(${index * 20} 235 218)`}
+              />
+            ))}
+          </g>
         </g>
 
         <g ref={gearRef} className="gear-ring">
           <circle className="gear-smoke" cx="160" cy="166" r="76" fill="url(#gear-smoke)" />
+          <g className="mechanism-plates" aria-hidden="true">
+            <path d="M 82 214 C 110 188 132 190 158 207 L 151 236 C 121 244 96 237 82 214 Z" />
+            <path d="M 177 212 C 208 191 238 197 262 222 C 244 246 205 254 181 239 Z" />
+            <path d="M 106 141 C 126 118 188 118 214 140 L 205 153 C 180 140 138 140 116 154 Z" />
+            {[
+              [91, 215],
+              [150, 223],
+              [187, 223],
+              [253, 223],
+              [117, 143],
+              [202, 143],
+            ].map(([cx, cy]) => (
+              <circle key={`${cx}-${cy}`} className="plate-rivet" cx={cx} cy={cy} r="2.2" />
+            ))}
+          </g>
           <path className="gear-bridge" d="M 96 170 C 126 136 189 137 224 168" />
           <path className="gear-bridge" d="M 119 207 C 145 183 180 183 207 207" />
+          <path className="gear-bridge fine" d="M 95 226 C 144 248 206 250 254 224" />
+          <path className="gear-bridge fine" d="M 91 198 C 130 223 189 224 227 197" />
           {GEARS.map((gear) => (
             <Gear key={`${gear.cx}-${gear.cy}`} spec={gear} />
           ))}
@@ -328,6 +402,17 @@ function Gear({ spec }: { spec: GearSpec }) {
         />
       ))}
       <circle cx={spec.cx} cy={spec.cy} r={spec.r} />
+      {Array.from({ length: 6 }, (_, index) => (
+        <line
+          key={index}
+          className="gear-spoke"
+          x1={spec.cx}
+          y1={spec.cy}
+          x2={spec.cx}
+          y2={spec.cy - spec.r * 0.76}
+          transform={`rotate(${index * 60} ${spec.cx} ${spec.cy})`}
+        />
+      ))}
       <circle cx={spec.cx} cy={spec.cy} r={Math.max(3, spec.r * 0.24)} />
       <circle cx={spec.cx} cy={spec.cy} r={Math.max(1.8, spec.r * 0.08)} />
     </g>
