@@ -178,6 +178,102 @@
     inset-block-end: -0.65rem;
   }
 
+  .composition-wash {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wash-band {
+    position: absolute;
+    display: block;
+    filter: blur(0.2px);
+    mix-blend-mode: multiply;
+  }
+
+  .clock-haze {
+    inset-block-start: 7.2rem;
+    inset-inline-start: 24%;
+    inline-size: 43rem;
+    block-size: 16rem;
+    background:
+      radial-gradient(ellipse at 38% 52%, rgba(16, 17, 18, 0.12), transparent 62%),
+      radial-gradient(ellipse at 64% 48%, rgba(16, 17, 18, 0.08), transparent 58%);
+    transform: rotate(-4deg);
+  }
+
+  .clock-haze::before,
+  .clock-haze::after,
+  .lower-haze::before,
+  .side-haze::before {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .clock-haze::before {
+    inset-block-start: 4.5rem;
+    inset-inline-start: 8rem;
+    inline-size: 21rem;
+    block-size: 4.6rem;
+    background: radial-gradient(ellipse, rgba(16, 17, 18, 0.16), transparent 68%);
+  }
+
+  .clock-haze::after {
+    inset-block-start: 2.6rem;
+    inset-inline-end: 5.5rem;
+    inline-size: 13rem;
+    block-size: 3.6rem;
+    background: radial-gradient(ellipse, rgba(31, 61, 115, 0.07), transparent 70%);
+  }
+
+  .lower-haze {
+    inset-block-end: 0.4rem;
+    inset-inline-start: 1.8rem;
+    inline-size: 46rem;
+    block-size: 8rem;
+    background:
+      radial-gradient(ellipse at 25% 50%, rgba(16, 17, 18, 0.18), transparent 64%),
+      radial-gradient(ellipse at 71% 47%, rgba(16, 17, 18, 0.08), transparent 66%);
+    opacity: 0.74;
+  }
+
+  .lower-haze::before {
+    inset-block-end: -1rem;
+    inset-inline-start: 4rem;
+    inline-size: 16rem;
+    block-size: 4.8rem;
+    background: radial-gradient(ellipse, rgba(16, 17, 18, 0.12), transparent 72%);
+  }
+
+  .side-haze {
+    inset-block-start: 7rem;
+    inset-inline-end: 2rem;
+    inline-size: 19rem;
+    block-size: 21rem;
+    background:
+      radial-gradient(ellipse at 50% 35%, rgba(16, 17, 18, 0.07), transparent 60%),
+      radial-gradient(ellipse at 70% 78%, rgba(31, 61, 115, 0.045), transparent 58%);
+  }
+
+  .side-haze::before {
+    inset-block-end: 2rem;
+    inset-inline-start: 2rem;
+    inline-size: 11rem;
+    block-size: 3.2rem;
+    background: radial-gradient(ellipse, rgba(16, 17, 18, 0.13), transparent 72%);
+  }
+
+  .date-panel,
+  .clock-stage,
+  .right-rail,
+  .lower-rail {
+    position: relative;
+    z-index: 1;
+  }
+
   .mechanism-rail {
     position: absolute;
     inset-block: 1rem 1rem;
@@ -863,7 +959,35 @@
 
   .astro-panel,
   .almanac-panel {
+    position: relative;
     padding: 0.64rem 0.72rem;
+  }
+
+  .astro-panel::after,
+  .almanac-panel::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+
+  .astro-panel::after {
+    inset-inline-end: 0.5rem;
+    inset-block-end: 0.5rem;
+    inline-size: 5.8rem;
+    block-size: 2.4rem;
+    background: radial-gradient(ellipse, rgba(16, 17, 18, 0.13), transparent 74%);
+  }
+
+  .almanac-panel::after {
+    inset-inline-start: 0.2rem;
+    inset-block-end: 0.1rem;
+    inline-size: 9rem;
+    block-size: 2.7rem;
+    background:
+      linear-gradient(135deg, transparent 0 43%, rgba(16, 17, 18, 0.22) 44% 46%, transparent 47%),
+      radial-gradient(ellipse at 68% 75%, rgba(16, 17, 18, 0.11), transparent 70%);
+    opacity: 0.7;
   }
 
   .section-heading {
@@ -885,6 +1009,7 @@
   }
 
   .sky-dial {
+    position: relative;
     margin: 0.42rem 0 0.28rem;
     border-block-end: 1px solid rgba(16, 17, 18, 0.16);
     padding-block-end: 0.32rem;
@@ -904,6 +1029,20 @@
     stroke-linecap: round;
   }
 
+  .sky-ink-island {
+    fill: rgba(16, 17, 18, 0.13);
+    stroke: rgba(16, 17, 18, 0.2);
+    stroke-width: 0.5;
+  }
+
+  .sky-tree {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.34);
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
   .sky-sun-track {
     fill: none;
     stroke: rgba(200, 155, 57, 0.62);
@@ -918,9 +1057,19 @@
     stroke-dasharray: 2 5;
   }
 
+  .sky-sun-glyph {
+    overflow: visible;
+    filter: drop-shadow(0 0 7px rgba(200, 155, 57, 0.38));
+  }
+
+  .sky-sun-glyph line {
+    stroke: var(--gold);
+    stroke-width: 0.9;
+    stroke-linecap: round;
+  }
+
   .sky-sun {
     fill: var(--gold);
-    filter: drop-shadow(0 0 7px rgba(200, 155, 57, 0.45));
   }
 
   .sky-moon {
@@ -929,10 +1078,99 @@
     stroke-width: 2;
   }
 
+  .sky-moon-glyph path {
+    fill: rgba(244, 240, 228, 0.64);
+  }
+
   .sky-dial text {
     fill: rgba(16, 17, 18, 0.58);
     font-family: var(--font-display);
     font-size: 0.64rem;
+  }
+
+  .celestial-signet-row {
+    position: absolute;
+    inset-block-start: 8.4rem;
+    inset-inline: 0.82rem;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  .sun-signet,
+  .moon-signet {
+    position: relative;
+    display: block;
+    inline-size: 1.38rem;
+    block-size: 1.38rem;
+    border-radius: 50%;
+  }
+
+  .sun-signet {
+    background:
+      radial-gradient(circle, rgba(244, 240, 228, 0.58) 0 17%, var(--gold) 18% 44%, transparent 45%);
+    color: var(--gold);
+    filter: drop-shadow(0 0 4px rgba(200, 155, 57, 0.3));
+  }
+
+  .sun-signet i {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+    inline-size: 1px;
+    block-size: 0.48rem;
+    background: currentColor;
+    border-radius: 999px;
+    transform-origin: 0 0;
+  }
+
+  .moon-signet {
+    border: 1px solid rgba(31, 61, 115, 0.52);
+    background:
+      radial-gradient(circle at 62% 48%, rgba(244, 240, 228, 0.9) 0 34%, transparent 35%),
+      var(--indigo);
+    opacity: 0.9;
+  }
+
+  .almanac-gold-seal {
+    position: absolute;
+    inset-block-start: 3.48rem;
+    inset-inline-start: 50.5%;
+    inline-size: 2.15rem;
+    block-size: 2.15rem;
+    border: 1px solid rgba(200, 155, 57, 0.62);
+    border-radius: 50%;
+    color: rgba(200, 155, 57, 0.88);
+    pointer-events: none;
+    transform: translateX(-50%);
+    opacity: 0.56;
+    z-index: 0;
+  }
+
+  .almanac-panel > :not(.almanac-gold-seal) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .almanac-gold-seal::before {
+    content: "";
+    position: absolute;
+    inset: 0.46rem;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, rgba(244, 240, 228, 0.72) 0 18%, transparent 19%),
+      repeating-conic-gradient(from 9deg, rgba(200, 155, 57, 0.86) 0 11deg, transparent 11deg 23deg);
+  }
+
+  .almanac-gold-seal i {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+    inline-size: 1px;
+    block-size: 0.96rem;
+    background: currentColor;
+    transform-origin: 0 0;
+    opacity: 0.56;
   }
 
   .almanac-panel .metric-list {

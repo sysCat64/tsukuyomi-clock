@@ -103,6 +103,11 @@ export default function App() {
       />
       <div className="paper-grain" aria-hidden="true" />
       <div className="scroll-frame">
+        <div className="composition-wash" aria-hidden="true">
+          <i className="wash-band clock-haze" />
+          <i className="wash-band lower-haze" />
+          <i className="wash-band side-haze" />
+        </div>
         <div className="mechanism-rail" aria-hidden="true">
           {Array.from({ length: 7 }, (_, index) => (
             <i key={index} />

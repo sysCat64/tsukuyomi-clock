@@ -44,6 +44,11 @@ export function DatePanel({ clock }: DatePanelProps) {
 export function AlmanacPanel({ almanac }: AlmanacPanelProps) {
   return (
     <section className="almanac-panel" aria-labelledby="almanac-title">
+      <div className="almanac-gold-seal" aria-hidden="true">
+        {Array.from({ length: 16 }, (_, index) => (
+          <i key={index} style={{ transform: `rotate(${index * 22.5}deg)` }} />
+        ))}
+      </div>
       <div className="section-heading">
         <p>暦</p>
         <h2 id="almanac-title">二十四節気</h2>
@@ -79,6 +84,14 @@ export function AstroPanel({ astronomy, location }: AstroPanelProps) {
         <h2 id="astro-title">日月のからくり</h2>
       </div>
       <SkyDial astronomy={astronomy} />
+      <div className="celestial-signet-row" aria-hidden="true">
+        <span className="sun-signet">
+          {Array.from({ length: 12 }, (_, index) => (
+            <i key={index} style={{ transform: `rotate(${index * 30}deg)` }} />
+          ))}
+        </span>
+        <span className="moon-signet" />
+      </div>
       <dl className="metric-grid">
         <div>
           <dt>日の出</dt>
@@ -120,10 +133,27 @@ function SkyDial({ astronomy }: { astronomy: AstronomyState }) {
     <figure className="sky-dial" aria-label="太陽と月の軌道図">
       <svg viewBox="0 0 200 118" role="img" aria-label="太陽軌道と月の満ち欠け">
         <path className="sky-ground" d="M 22 97 C 54 82 84 91 112 84 C 142 76 164 82 180 96" />
+        <path className="sky-ink-island" d="M 25 94 C 48 84 70 90 92 84 C 121 76 153 82 178 95 C 132 105 73 106 25 94 Z" />
+        <path className="sky-tree" d="M 139 82 C 139 74 139 69 141 62 M 137 73 C 132 69 128 66 123 64 M 141 72 C 147 67 153 65 160 64" />
         <path className="sky-sun-track" d="M 26 83 C 62 18 136 18 174 83" pathLength="1" />
         <path className="sky-moon-track" d="M 31 92 C 67 45 132 45 169 92" pathLength="1" />
-        <circle className="sky-sun" cx={sunX} cy={sunY} r="6" />
-        <circle className="sky-moon" cx={moonPhaseX} cy={moonPhaseY} r="6" />
+        <g className="sky-sun-glyph" transform={`translate(${sunX} ${sunY})`}>
+          {Array.from({ length: 10 }, (_, index) => (
+            <line
+              key={index}
+              x1="0"
+              y1="-7"
+              x2="0"
+              y2="-11"
+              transform={`rotate(${index * 36})`}
+            />
+          ))}
+          <circle className="sky-sun" r="6" />
+        </g>
+        <g className="sky-moon-glyph" transform={`translate(${moonPhaseX} ${moonPhaseY})`}>
+          <circle className="sky-moon" r="6" />
+          <path d="M 1 -6 A 6 6 0 1 0 1 6 A 3.6 6 0 1 1 1 -6" />
+        </g>
         <text x="24" y="109">東</text>
         <text x="169" y="109">西</text>
         <text x="95" y="113">南</text>
