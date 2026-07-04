@@ -20,7 +20,7 @@ type AstroPanelProps = {
 export function DatePanel({ clock }: DatePanelProps) {
   return (
     <section className="date-panel" aria-labelledby="date-title">
-      <p className="panel-kicker">月読</p>
+      <p className="panel-kicker">月読命</p>
       <h1 id="date-title">月読</h1>
       <p className="subtitle">墨暦からくり時計</p>
       <dl className="date-list">

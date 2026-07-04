@@ -137,6 +137,7 @@ export function AnalogClock({
         </defs>
 
         <circle className="enso-shadow" cx="160" cy="160" r="129" />
+        <circle className="dial-inner-wash" cx="160" cy="160" r="105" />
         <path
           className="enso-wash wash-one"
           d="M 83 72 C 122 34 190 28 238 69 C 279 104 297 171 267 225 C 234 282 153 302 91 264"
@@ -144,6 +145,10 @@ export function AnalogClock({
         <path
           className="enso-wash wash-two"
           d="M 53 148 C 62 76 132 34 205 49 C 271 63 302 131 282 198 C 260 270 181 291 112 265 C 70 249 45 204 53 148 Z"
+        />
+        <path
+          className="enso-wash wash-three"
+          d="M 74 231 C 45 183 50 116 92 73 C 137 27 211 39 256 82"
         />
         <path
           className="enso-ring"
@@ -165,6 +170,11 @@ export function AnalogClock({
         <path
           className="sun-arc ghost"
           d="M 63 218 C 112 105 214 96 273 192"
+          pathLength="1"
+        />
+        <path
+          className="sun-arc outer"
+          d="M 183 43 C 248 19 297 63 292 137 C 289 179 272 211 246 235"
           pathLength="1"
         />
         {[0.14, 0.34, 0.58, 0.82].map((point) => (
@@ -198,6 +208,8 @@ export function AnalogClock({
 
         <g ref={gearRef} className="gear-ring">
           <circle className="gear-smoke" cx="160" cy="166" r="76" fill="url(#gear-smoke)" />
+          <path className="gear-bridge" d="M 96 170 C 126 136 189 137 224 168" />
+          <path className="gear-bridge" d="M 119 207 C 145 183 180 183 207 207" />
           {GEARS.map((gear) => (
             <Gear key={`${gear.cx}-${gear.cy}`} spec={gear} />
           ))}
@@ -221,6 +233,21 @@ export function AnalogClock({
               transform={`rotate(${index * 10} 160 160)`}
             />
           ))}
+        </g>
+
+        <g className="cardinal-markers" aria-hidden="true">
+          <text x="160" y="74" textAnchor="middle">
+            十二
+          </text>
+          <text x="248" y="168" textAnchor="middle">
+            三
+          </text>
+          <text x="160" y="262" textAnchor="middle">
+            六
+          </text>
+          <text x="72" y="168" textAnchor="middle">
+            九
+          </text>
         </g>
 
         <g className="hour-marks">

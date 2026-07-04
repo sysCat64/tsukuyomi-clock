@@ -57,6 +57,7 @@ export function InkCanvas({ reducedMotion, moonIllumination }: InkCanvasProps) {
       context.globalCompositeOperation = "source-over";
 
       drawMist(context, rect.width, rect.height, moonIllumination, timestamp);
+      drawInkMargins(context, rect.width, rect.height, timestamp);
       drawInkBloom(context, rect.width, rect.height, timestamp);
       drawBrushStrokes(context, strokes, rect.width, rect.height, timestamp);
       drawParticles(context, particles, rect.width, rect.height, timestamp);
@@ -109,6 +110,48 @@ function drawMist(
   gradient.addColorStop(0.52, "rgba(25, 50, 94, 0.035)");
   gradient.addColorStop(1, "rgba(25, 50, 94, 0)");
   context.fillStyle = gradient;
+  context.fillRect(0, 0, width, height);
+}
+
+function drawInkMargins(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  timestamp: number,
+) {
+  const breath = 0.88 + Math.sin(timestamp / 5100) * 0.12;
+  const leftWash = context.createLinearGradient(0, 0, width * 0.34, 0);
+  leftWash.addColorStop(0, "rgba(12, 13, 14, 0.12)");
+  leftWash.addColorStop(0.42, "rgba(12, 13, 14, 0.045)");
+  leftWash.addColorStop(1, "rgba(12, 13, 14, 0)");
+  context.fillStyle = leftWash;
+  context.fillRect(0, 0, width * 0.42, height);
+
+  const lowerBloom = context.createRadialGradient(
+    width * 0.34,
+    height * 1.02,
+    0,
+    width * 0.34,
+    height * 1.02,
+    Math.min(width, height) * 0.56 * breath,
+  );
+  lowerBloom.addColorStop(0, "rgba(13, 14, 15, 0.16)");
+  lowerBloom.addColorStop(0.62, "rgba(13, 14, 15, 0.045)");
+  lowerBloom.addColorStop(1, "rgba(13, 14, 15, 0)");
+  context.fillStyle = lowerBloom;
+  context.fillRect(0, 0, width, height);
+
+  const rightMist = context.createRadialGradient(
+    width * 0.86,
+    height * 0.86,
+    0,
+    width * 0.86,
+    height * 0.86,
+    Math.min(width, height) * 0.38,
+  );
+  rightMist.addColorStop(0, "rgba(31, 61, 115, 0.045)");
+  rightMist.addColorStop(1, "rgba(31, 61, 115, 0)");
+  context.fillStyle = rightMist;
   context.fillRect(0, 0, width, height);
 }
 
