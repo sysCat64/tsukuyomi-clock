@@ -29,6 +29,11 @@ type InkFleckSpec = {
   opacity: number;
 };
 
+type InkBristleSpec = {
+  d: string;
+  className: string;
+};
+
 const GEARS: GearSpec[] = [
   { cx: 160, cy: 160, r: 34, teeth: 26, className: "main-gear" },
   { cx: 126, cy: 154, r: 22, teeth: 20, className: "shadow-gear" },
@@ -54,6 +59,29 @@ const INK_FLECKS: InkFleckSpec[] = [
   { cx: 260, cy: 276, rx: 3.2, ry: 1, rotate: -18, opacity: 0.26 },
   { cx: 46, cy: 201, rx: 3.4, ry: 1, rotate: 62, opacity: 0.25 },
   { cx: 185, cy: 289, rx: 2.6, ry: 0.9, rotate: 6, opacity: 0.23 },
+];
+
+const INK_BRISTLES: InkBristleSpec[] = [
+  {
+    d: "M 65 83 C 112 40 190 32 242 70",
+    className: "heavy",
+  },
+  {
+    d: "M 48 151 C 53 91 102 48 164 42 C 210 38 250 59 275 95",
+    className: "dry",
+  },
+  {
+    d: "M 44 173 C 44 124 73 82 119 58",
+    className: "dry pale",
+  },
+  {
+    d: "M 266 101 C 291 146 284 211 245 252 C 204 294 132 292 79 252",
+    className: "broken",
+  },
+  {
+    d: "M 92 268 C 134 288 199 286 240 254",
+    className: "dry tail",
+  },
 ];
 
 export function AnalogClock({
@@ -188,6 +216,15 @@ export function AnalogClock({
           d="M 69 78 C 91 54 121 40 157 38"
           pathLength="1"
         />
+        <g className="enso-bristles" aria-hidden="true">
+          {INK_BRISTLES.map((stroke) => (
+            <path
+              key={`${stroke.className}-${stroke.d}`}
+              className={stroke.className}
+              d={stroke.d}
+            />
+          ))}
+        </g>
         <g className="enso-splatter" aria-hidden="true">
           {INK_FLECKS.map((fleck) => (
             <ellipse

@@ -618,6 +618,47 @@
     stroke-linecap: round;
   }
 
+  .enso-bristles {
+    fill: none;
+    pointer-events: none;
+    filter: url(#ink-wobble);
+    mix-blend-mode: multiply;
+  }
+
+  .enso-bristles path {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .enso-bristles .heavy {
+    stroke: rgba(16, 17, 18, 0.42);
+    stroke-width: 11;
+    stroke-dasharray: 0.78 0.045 0.08 0.035;
+  }
+
+  .enso-bristles .dry {
+    stroke: rgba(16, 17, 18, 0.24);
+    stroke-width: 4.8;
+    stroke-dasharray: 0.12 0.05 0.42 0.075;
+  }
+
+  .enso-bristles .pale {
+    stroke: rgba(16, 17, 18, 0.15);
+    stroke-width: 7.2;
+  }
+
+  .enso-bristles .broken {
+    stroke: rgba(16, 17, 18, 0.32);
+    stroke-width: 6.4;
+    stroke-dasharray: 0.34 0.08 0.12 0.075;
+  }
+
+  .enso-bristles .tail {
+    stroke: rgba(16, 17, 18, 0.2);
+    stroke-width: 3.4;
+  }
+
   .enso-splatter {
     fill: rgba(16, 17, 18, 0.72);
     stroke: rgba(16, 17, 18, 0.45);
@@ -934,13 +975,73 @@
   }
 
   .location-controls {
+    position: relative;
     display: grid;
     gap: 0.38rem;
-    padding: 0.52rem 0.7rem;
+    padding: 0.56rem 0.72rem 0.62rem;
+    background:
+      linear-gradient(90deg, rgba(16, 17, 18, 0.052), transparent 1.95rem),
+      linear-gradient(180deg, rgba(250, 247, 236, 0.34), rgba(244, 240, 228, 0.14)),
+      rgba(244, 240, 228, 0.2);
+  }
+
+  .location-controls::before,
+  .location-controls::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .location-controls::before {
+    inset: 0.26rem;
+    border: 1px solid rgba(16, 17, 18, 0.11);
+    border-inline-start-color: rgba(16, 17, 18, 0.24);
+  }
+
+  .location-controls::after {
+    inset-block-start: 0.62rem;
+    inset-inline-end: 0.78rem;
+    inline-size: 1.05rem;
+    block-size: 1.05rem;
+    border: 1px solid rgba(16, 17, 18, 0.42);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, rgba(16, 17, 18, 0.76) 0 0.09rem, transparent 0.1rem),
+      conic-gradient(from 0deg, transparent 0 18deg, rgba(16, 17, 18, 0.4) 18deg 21deg, transparent 21deg 90deg, rgba(16, 17, 18, 0.34) 90deg 93deg, transparent 93deg 180deg, rgba(16, 17, 18, 0.34) 180deg 183deg, transparent 183deg 270deg, rgba(16, 17, 18, 0.34) 270deg 273deg, transparent 273deg);
+    opacity: 0.8;
   }
 
   .location-select-wrap {
+    position: relative;
     min-inline-size: 0;
+    z-index: 1;
+  }
+
+  .location-select-wrap::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 2.18rem;
+    inset-inline-start: 0.72rem;
+    inline-size: 0.42rem;
+    block-size: 0.42rem;
+    border-radius: 50% 50% 50% 0;
+    background: var(--ink);
+    transform: rotate(-45deg);
+    opacity: 0.88;
+    pointer-events: none;
+  }
+
+  .location-select-wrap::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 2.05rem;
+    inset-inline-end: 0.7rem;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-inline-end: 2px solid rgba(16, 17, 18, 0.78);
+    border-block-end: 2px solid rgba(16, 17, 18, 0.78);
+    transform: rotate(45deg);
+    pointer-events: none;
   }
 
   .preset-grid {
@@ -948,9 +1049,13 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.28rem;
     margin-block-start: 0.08rem;
+    position: relative;
+    z-index: 1;
   }
 
   .location-status {
+    position: relative;
+    z-index: 1;
     margin: 0;
     color: var(--ink-soft);
     font-size: 0.7rem;
@@ -967,9 +1072,18 @@
   }
 
   select {
+    appearance: none;
     inline-size: 100%;
     margin-block-start: 0.28rem;
-    padding: 0.34rem 0.62rem;
+    padding: 0.4rem 2.15rem 0.4rem 1.65rem;
+    border-color: rgba(16, 17, 18, 0.42);
+    border-radius: 3px;
+    background:
+      linear-gradient(90deg, rgba(16, 17, 18, 0.055), transparent 1.8rem),
+      rgba(250, 247, 236, 0.74);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    line-height: 1.2;
   }
 
   button {
@@ -988,6 +1102,10 @@
     font-family: var(--font-display);
     font-size: 0.82rem;
     line-height: 1.1;
+    border-radius: 3px;
+    background:
+      linear-gradient(180deg, rgba(250, 247, 236, 0.62), rgba(244, 240, 228, 0.38)),
+      rgba(244, 240, 228, 0.42);
   }
 
   .preset-chip[aria-pressed="true"] {
@@ -1000,11 +1118,17 @@
   }
 
   .locate-button {
+    position: relative;
+    z-index: 1;
     inline-size: 100%;
     min-block-size: 1.9rem;
     margin-block-start: 0.12rem;
     color: var(--ink);
     font-family: var(--font-display);
+    border-radius: 3px;
+    background:
+      linear-gradient(90deg, transparent, rgba(200, 155, 57, 0.08), transparent),
+      rgba(250, 247, 236, 0.58);
   }
 
   button:hover:not(:disabled),
