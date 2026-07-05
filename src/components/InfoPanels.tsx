@@ -189,6 +189,18 @@ function SkyDial({ astronomy }: { astronomy: AstronomyState }) {
           </radialGradient>
         </defs>
         <ellipse className="sky-dial-wash" cx="102" cy="86" rx="83" ry="24" />
+        <g className="sky-mountain-mist" aria-hidden="true">
+          <path className="sky-mist-band high" d="M 16 61 C 38 52 53 55 73 48 C 93 42 116 40 135 48 C 153 55 166 57 184 50" />
+          <path className="sky-mist-band low" d="M 20 76 C 50 66 71 72 97 65 C 122 58 150 62 180 74" />
+          <path className="sky-mountain pale" d="M 18 88 C 38 74 51 78 67 66 C 78 58 89 51 102 64 C 115 77 128 73 143 60 C 158 49 170 67 184 82 L 184 96 C 135 91 83 94 18 96 Z" />
+          <path className="sky-mountain deep" d="M 24 94 C 43 84 61 87 79 77 C 94 68 112 69 128 80 C 145 91 163 84 181 94 C 135 105 70 106 24 94 Z" />
+          <path className="sky-mountain dry" d="M 34 86 C 48 80 60 83 72 76 M 92 69 C 105 65 117 70 129 78 M 145 83 C 157 76 169 77 179 85" />
+          <g className="sky-gold-beads">
+            <circle cx="48" cy="80" r="1.2" />
+            <circle cx="103" cy="66" r="1.1" />
+            <circle cx="160" cy="78" r="1" />
+          </g>
+        </g>
         <path className="sky-horizon" d="M 20 91 H 182" />
         <path className="sky-meridian" d="M 100 91 C 99 65 100 40 101 16" />
         <g className="sky-altitude-guides" aria-hidden="true">

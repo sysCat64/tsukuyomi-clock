@@ -100,6 +100,11 @@ const INK_FLECKS: InkFleckSpec[] = [
   { cx: 260, cy: 276, rx: 3.2, ry: 1, rotate: -18, opacity: 0.26 },
   { cx: 46, cy: 201, rx: 3.4, ry: 1, rotate: 62, opacity: 0.25 },
   { cx: 185, cy: 289, rx: 2.6, ry: 0.9, rotate: 6, opacity: 0.23 },
+  { cx: 118, cy: 34, rx: 2.1, ry: 0.62, rotate: -18, opacity: 0.3 },
+  { cx: 214, cy: 55, rx: 5.2, ry: 0.95, rotate: 15, opacity: 0.22 },
+  { cx: 295, cy: 136, rx: 2.8, ry: 0.78, rotate: 61, opacity: 0.24 },
+  { cx: 228, cy: 300, rx: 4.2, ry: 0.86, rotate: -8, opacity: 0.24 },
+  { cx: 39, cy: 154, rx: 2.7, ry: 0.72, rotate: 77, opacity: 0.25 },
 ];
 
 const INK_BRISTLES: InkBristleSpec[] = [
@@ -122,6 +127,22 @@ const INK_BRISTLES: InkBristleSpec[] = [
   {
     d: "M 92 268 C 134 288 199 286 240 254",
     className: "dry tail",
+  },
+  {
+    d: "M 95 49 C 133 28 191 25 228 45 C 247 55 262 68 274 87",
+    className: "granular",
+  },
+  {
+    d: "M 39 138 C 42 105 59 76 86 54 C 119 28 170 21 215 38",
+    className: "granular pale",
+  },
+  {
+    d: "M 273 116 C 292 161 286 214 253 254 C 230 282 194 296 151 296",
+    className: "granular broken",
+  },
+  {
+    d: "M 58 223 C 83 269 141 292 200 279",
+    className: "granular tail",
   },
 ];
 
