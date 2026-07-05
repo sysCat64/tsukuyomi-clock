@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import washiLandscapeUrl from "./assets/tsukuyomi-washi-landscape.png";
+import washiLandscapeUrl from "./assets/tsukuyomi-washi-landscape.jpg";
 import { AnalogClock } from "./components/AnalogClock";
 import { FlipClock } from "./components/FlipClock";
 import { InkCanvas } from "./components/InkCanvas";

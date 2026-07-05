@@ -10,6 +10,7 @@ English summary: Tsukuyomi is a Japanese ink-painting inspired astronomical kara
 - 下段にパタパタ式デジタル時計、左に日付/和暦風ラベル/曜日、右に日の出、日の入り、太陽高度、月高度、月相、月齢を表示します。
 - 二十四節気と七十二候は、Astronomy Engineの太陽黄経探索と節気区間の三分割によるv1近似です。
 - Canvasと薄いラスタ素材は墨滲み、霧、粒子、筆筋、山水、月面、歯車影、和紙小窓、朱印、黒漆ケースの擦れの装飾レイヤーだけに使い、時刻や暦などの意味情報はHTML/SVGにも保持します。
+- 背面の山水素材は軽量なJPEG、透過が必要な時計/パネル装飾はPNGとして扱います。
 
 ## 技術構成
 
