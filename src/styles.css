@@ -276,6 +276,82 @@
     overflow: hidden;
   }
 
+  .composition-ground {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    mix-blend-mode: multiply;
+  }
+
+  .composition-ground path,
+  .composition-ground circle {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .ground-ink-pool {
+    fill: rgba(16, 17, 18, 0.13);
+    filter: blur(0.15px);
+  }
+
+  .ground-branch,
+  .ground-bamboo path {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.34);
+    stroke-width: 2.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ground-branch.fine,
+  .ground-dry,
+  .ground-bamboo path {
+    stroke-width: 1.1;
+  }
+
+  .ground-blossom {
+    fill: rgba(184, 58, 34, 0.78);
+    stroke: rgba(16, 17, 18, 0.34);
+    stroke-width: 0.45;
+  }
+
+  .ground-blossom.pale {
+    fill: rgba(201, 134, 145, 0.62);
+  }
+
+  .ground-mist {
+    fill: rgba(16, 17, 18, 0.055);
+  }
+
+  .ground-ridge {
+    fill: rgba(16, 17, 18, 0.11);
+  }
+
+  .ground-ridge.deep {
+    fill: rgba(16, 17, 18, 0.18);
+  }
+
+  .ground-dry {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.22);
+    stroke-linecap: round;
+  }
+
+  .ground-bamboo {
+    opacity: 0.58;
+  }
+
+  .ground-horizon {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.11);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-dasharray: 2 8;
+  }
+
   .composition-orbit-path {
     fill: none;
     stroke-linecap: round;
@@ -710,14 +786,14 @@
   }
 
   .wash-one {
-    stroke: rgba(16, 17, 18, 0.27);
-    stroke-width: 21;
+    stroke: rgba(16, 17, 18, 0.36);
+    stroke-width: 25;
     filter: url(#ink-wobble);
   }
 
   .wash-two {
-    stroke: rgba(16, 17, 18, 0.13);
-    stroke-width: 32;
+    stroke: rgba(16, 17, 18, 0.18);
+    stroke-width: 36;
   }
 
   .wash-three {
@@ -728,8 +804,8 @@
 
   .enso-ring {
     fill: none;
-    stroke: rgba(16, 17, 18, 0.9);
-    stroke-width: 18;
+    stroke: rgba(16, 17, 18, 0.94);
+    stroke-width: 21;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
@@ -755,8 +831,8 @@
   }
 
   .enso-bristles .heavy {
-    stroke: rgba(16, 17, 18, 0.42);
-    stroke-width: 11;
+    stroke: rgba(16, 17, 18, 0.58);
+    stroke-width: 14;
     stroke-dasharray: 0.78 0.045 0.08 0.035;
   }
 
@@ -802,6 +878,25 @@
   .enso-bristles .granular.tail {
     stroke: rgba(16, 17, 18, 0.2);
     stroke-width: 2.4;
+  }
+
+  .enso-bristles .black-pool {
+    stroke: rgba(16, 17, 18, 0.64);
+    stroke-width: 17;
+    stroke-dasharray: 0.44 0.035 0.18 0.055;
+  }
+
+  .enso-bristles .black-pool.broken {
+    stroke: rgba(16, 17, 18, 0.52);
+    stroke-width: 12;
+    stroke-dasharray: 0.28 0.08 0.1 0.06 0.32 0.09;
+  }
+
+  .enso-bristles .dry-scrape {
+    stroke: rgba(244, 240, 228, 0.58);
+    stroke-width: 2.8;
+    stroke-dasharray: 0.05 0.045;
+    mix-blend-mode: screen;
   }
 
   .enso-splatter {
@@ -1072,14 +1167,47 @@
   }
 
   .moon-frame {
-    fill: none;
+    fill: rgba(238, 233, 220, 0.42);
     stroke: rgba(200, 155, 57, 0.72);
     stroke-width: 2;
+  }
+
+  .moon-window-paper {
+    fill: rgba(238, 233, 220, 0.62);
+    stroke: rgba(16, 17, 18, 0.16);
+    stroke-width: 0.6;
   }
 
   .moon-lattice {
     stroke: rgba(16, 17, 18, 0.25);
     stroke-width: 1;
+  }
+
+  .moon-lattice.fine {
+    stroke: rgba(16, 17, 18, 0.18);
+    stroke-width: 0.7;
+  }
+
+  .moon-window-branch {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.58);
+    stroke-width: 1.1;
+    stroke-linecap: round;
+  }
+
+  .moon-window-branch.fine {
+    stroke-width: 0.7;
+    opacity: 0.76;
+  }
+
+  .moon-window-blossom {
+    fill: var(--vermilion);
+    stroke: rgba(244, 240, 228, 0.54);
+    stroke-width: 0.32;
+  }
+
+  .moon-window-blossom.pale {
+    fill: var(--sakura);
   }
 
   .moon-window-label {
@@ -2383,6 +2511,10 @@
       opacity: 0.26;
     }
 
+    .composition-ground {
+      opacity: 0.34;
+    }
+
     .composition-sun {
       display: none;
     }
@@ -2511,6 +2643,10 @@
     }
 
     .composition-orbit {
+      display: none;
+    }
+
+    .composition-ground {
       display: none;
     }
 

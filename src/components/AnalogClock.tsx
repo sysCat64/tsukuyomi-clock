@@ -105,6 +105,10 @@ const INK_FLECKS: InkFleckSpec[] = [
   { cx: 295, cy: 136, rx: 2.8, ry: 0.78, rotate: 61, opacity: 0.24 },
   { cx: 228, cy: 300, rx: 4.2, ry: 0.86, rotate: -8, opacity: 0.24 },
   { cx: 39, cy: 154, rx: 2.7, ry: 0.72, rotate: 77, opacity: 0.25 },
+  { cx: 53, cy: 91, rx: 5.8, ry: 1.2, rotate: -31, opacity: 0.34 },
+  { cx: 73, cy: 241, rx: 6.2, ry: 1.1, rotate: 22, opacity: 0.28 },
+  { cx: 257, cy: 247, rx: 6.8, ry: 1.1, rotate: -26, opacity: 0.31 },
+  { cx: 288, cy: 119, rx: 4.6, ry: 0.86, rotate: 60, opacity: 0.29 },
 ];
 
 const INK_BRISTLES: InkBristleSpec[] = [
@@ -143,6 +147,18 @@ const INK_BRISTLES: InkBristleSpec[] = [
   {
     d: "M 58 223 C 83 269 141 292 200 279",
     className: "granular tail",
+  },
+  {
+    d: "M 72 74 C 115 35 184 28 236 56 C 265 72 283 98 291 129",
+    className: "black-pool",
+  },
+  {
+    d: "M 282 133 C 300 193 268 258 212 284 C 166 306 104 292 66 250",
+    className: "black-pool broken",
+  },
+  {
+    d: "M 45 178 C 40 139 50 104 76 74 C 112 33 172 22 226 39",
+    className: "dry-scrape",
   },
 ];
 
@@ -348,13 +364,21 @@ export function AnalogClock({
         <g ref={moonGateRef} className="moon-window" opacity={moonOpacity}>
           <circle cx="238" cy="90" r="30" fill="url(#moon-glow)" />
           <circle className="moon-frame" cx="238" cy="90" r="27" />
+          <path className="moon-window-paper" d="M 218 76 C 226 66 246 64 256 77 L 256 107 C 245 118 225 116 217 105 Z" />
           <line className="moon-lattice" x1="220" y1="72" x2="220" y2="108" />
           <line className="moon-lattice" x1="228" y1="66" x2="228" y2="114" />
+          <line className="moon-lattice fine" x1="237" y1="64" x2="237" y2="116" />
           <line className="moon-lattice" x1="247" y1="66" x2="247" y2="114" />
+          <line className="moon-lattice fine" x1="216" y1="88" x2="260" y2="88" />
+          <line className="moon-lattice fine" x1="217" y1="101" x2="258" y2="101" />
           <path
             d="M 239 66 A 24 24 0 1 0 239 114 A 14 24 0 1 1 239 66"
             fill="#203c70"
           />
+          <path className="moon-window-branch" d="M 222 109 C 230 98 240 96 251 100" />
+          <path className="moon-window-branch fine" d="M 235 99 C 239 93 244 89 251 86" />
+          <circle className="moon-window-blossom" cx="252" cy="100" r="1.8" />
+          <circle className="moon-window-blossom pale" cx="252" cy="86" r="1.4" />
           <text className="moon-window-label" x="238" y="129" textAnchor="middle">
             月齢
           </text>

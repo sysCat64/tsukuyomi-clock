@@ -111,6 +111,7 @@ export default function App() {
           <i className="wash-band side-haze" />
         </div>
         <CompositionOrbit progress={astronomy.daylightProgress} />
+        <CompositionGround />
         <div className="mechanism-rail" aria-hidden="true">
           {Array.from({ length: 7 }, (_, index) => (
             <i key={index} />
@@ -145,6 +146,44 @@ export default function App() {
       <RehearsalPanel state={rehearsal.state} actions={rehearsal.actions} />
       {/* v1 dependencies stay SVG/Canvas-native. Future candidates: Three.js for a 3D globe, D3.js for dense calendar charts, and p5.js for generative brush studies. */}
     </main>
+  );
+}
+
+function CompositionGround() {
+  return (
+    <svg
+      className="composition-ground"
+      viewBox="0 0 1280 680"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g className="ground-left">
+        <path className="ground-ink-pool" d="M -28 612 C 48 578 116 590 194 626 C 105 665 30 662 -28 642 Z" />
+        <path className="ground-branch" d="M 18 633 C 58 600 73 568 92 526" />
+        <path className="ground-branch fine" d="M 54 600 C 38 582 28 560 24 536" />
+        <path className="ground-branch fine" d="M 66 584 C 91 575 111 557 126 536" />
+        <path className="ground-branch fine" d="M 82 552 C 64 538 54 521 49 502" />
+        <circle className="ground-blossom" cx="25" cy="538" r="3.2" />
+        <circle className="ground-blossom pale" cx="52" cy="514" r="2.6" />
+        <circle className="ground-blossom" cx="126" cy="536" r="2.8" />
+        <circle className="ground-blossom pale" cx="80" cy="548" r="2.2" />
+      </g>
+      <g className="ground-right">
+        <path className="ground-mist" d="M 936 600 C 980 570 1026 580 1068 552 C 1114 522 1166 548 1214 586 C 1166 616 1040 624 936 600 Z" />
+        <path className="ground-ridge" d="M 900 632 C 950 600 995 617 1044 588 C 1094 559 1130 577 1176 603 C 1212 624 1260 614 1308 588 L 1308 680 L 900 680 Z" />
+        <path className="ground-ridge deep" d="M 980 650 C 1030 626 1090 636 1138 608 C 1188 580 1232 606 1288 632 L 1288 680 L 980 680 Z" />
+        <path className="ground-dry" d="M 982 604 C 1012 589 1035 596 1060 578 M 1105 585 C 1134 567 1162 575 1190 596 M 1210 612 C 1238 596 1260 598 1288 586" />
+        <g className="ground-bamboo">
+          <path d="M 1076 642 C 1088 602 1099 566 1112 526" />
+          <path d="M 1100 645 C 1104 607 1112 570 1124 534" />
+          <path d="M 1082 593 C 1062 578 1046 559 1038 535" />
+          <path d="M 1105 584 C 1128 562 1148 546 1172 536" />
+          <path d="M 1092 618 C 1070 613 1050 602 1032 584" />
+          <path d="M 1110 617 C 1136 611 1161 600 1182 582" />
+        </g>
+      </g>
+      <path className="ground-horizon" d="M 128 642 C 342 617 540 626 760 647 C 918 662 1082 650 1222 626" />
+    </svg>
   );
 }
 
