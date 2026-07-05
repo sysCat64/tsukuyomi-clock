@@ -13,6 +13,7 @@ type AnalogClockProps = {
   minutePulse: string;
   hourPulse: string;
   reducedMotion: boolean;
+  showSecondHand: boolean;
 };
 
 type GearSpec = {
@@ -171,6 +172,7 @@ export function AnalogClock({
   minutePulse,
   hourPulse,
   reducedMotion,
+  showSecondHand,
 }: AnalogClockProps) {
   const gearRef = useRef<SVGGElement | null>(null);
   const escapementRef = useRef<SVGGElement | null>(null);
@@ -565,9 +567,11 @@ export function AnalogClock({
           <g transform={`rotate(${angles.minute} 160 160)`}>
             <line className="hand minute-hand" x1="160" y1="160" x2="160" y2="67" />
           </g>
-          <g transform={`rotate(${angles.second} 160 160)`}>
-            <line className="hand second-hand" x1="160" y1="172" x2="160" y2="48" />
-          </g>
+          {showSecondHand ? (
+            <g className="second-hand-group" transform={`rotate(${angles.second} 160 160)`}>
+              <line className="hand second-hand" x1="160" y1="172" x2="160" y2="48" />
+            </g>
+          ) : null}
           <circle className="hand-pin" cx="160" cy="160" r="6" />
         </g>
       </svg>

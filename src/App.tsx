@@ -28,6 +28,7 @@ export default function App() {
   const [location, setLocation] = useState<LocationPreset>(TOKYO_LOCATION);
   const [locationStatus, setLocationStatus] = useState("東京を初期観測地にしています。");
   const [isLocating, setIsLocating] = useState(false);
+  const [showAnalogSecondHand, setShowAnalogSecondHand] = useState(false);
   const effectiveReducedMotion = getEffectiveReducedMotion(
     systemReducedMotion,
     rehearsal.state.enabled ? rehearsal.state.motionOverride : "system",
@@ -131,17 +132,20 @@ export default function App() {
           minutePulse={pulseKeys.minute}
           hourPulse={pulseKeys.hour}
           reducedMotion={effectiveReducedMotion}
+          showSecondHand={showAnalogSecondHand}
         />
         <div className="right-rail">
           <LocationControls
             location={location}
             status={locationStatus}
             isLocating={isLocating}
+            showAnalogSecondHand={showAnalogSecondHand}
             onPresetChange={(nextLocation) => {
               setLocation(nextLocation);
               setLocationStatus(`${nextLocation.labelJa}を観測地にしました。`);
             }}
             onUseCurrentLocation={useCurrentLocation}
+            onShowAnalogSecondHandChange={setShowAnalogSecondHand}
           />
           <AstroPanel astronomy={astronomy} location={location} />
         </div>

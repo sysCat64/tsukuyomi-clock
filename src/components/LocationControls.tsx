@@ -5,23 +5,38 @@ type LocationControlsProps = {
   location: LocationPreset;
   status: string;
   isLocating: boolean;
+  showAnalogSecondHand: boolean;
   onPresetChange: (location: LocationPreset) => void;
   onUseCurrentLocation: () => void;
+  onShowAnalogSecondHandChange: (show: boolean) => void;
 };
 
 export function LocationControls({
   location,
   status,
   isLocating,
+  showAnalogSecondHand,
   onPresetChange,
   onUseCurrentLocation,
+  onShowAnalogSecondHandChange,
 }: LocationControlsProps) {
   return (
     <section className="location-controls" aria-labelledby="location-title">
       <div className="location-select-wrap">
-        <p className="control-label" id="location-title">
-          観測地
-        </p>
+        <div className="location-heading-row">
+          <p className="control-label" id="location-title">
+            観測地
+          </p>
+          <label className="second-hand-toggle">
+            <input
+              type="checkbox"
+              checked={showAnalogSecondHand}
+              onChange={(event) => onShowAnalogSecondHandChange(event.target.checked)}
+              aria-label="アナログ時計の秒針を表示"
+            />
+            <span>秒針</span>
+          </label>
+        </div>
         <label className="sr-only" htmlFor="location-select">
           日本の都市を選択
         </label>
