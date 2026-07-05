@@ -30,6 +30,41 @@ const STAR_POINTS = [
 export function DatePanel({ clock }: DatePanelProps) {
   return (
     <section className="date-panel" aria-labelledby="date-title">
+      <span className="date-ink-haze" aria-hidden="true" />
+      <svg className="date-botanical-scroll" viewBox="0 0 152 190" aria-hidden="true" focusable="false">
+        <path className="date-branch main" d="M22 178 C28 136 36 104 56 70 C67 50 79 33 98 14" />
+        <path className="date-branch dry" d="M45 98 C34 88 24 77 17 62" />
+        <path className="date-branch dry" d="M53 78 C68 73 82 62 94 49" />
+        <path className="date-branch pale" d="M34 138 C54 128 72 114 86 96" />
+        <path className="date-branch pale" d="M28 154 C20 143 15 129 15 114" />
+        <ellipse className="date-leaf leaf-a" cx="24" cy="73" rx="4.6" ry="11" transform="rotate(-35 24 73)" />
+        <ellipse className="date-leaf leaf-b" cx="78" cy="60" rx="4.2" ry="12" transform="rotate(48 78 60)" />
+        <ellipse className="date-leaf leaf-c" cx="62" cy="114" rx="3.8" ry="10" transform="rotate(55 62 114)" />
+        <ellipse className="date-leaf leaf-d" cx="20" cy="130" rx="3" ry="8.5" transform="rotate(-28 20 130)" />
+        <circle className="date-blossom blossom-a" cx="92" cy="44" r="2.3" />
+        <circle className="date-blossom blossom-b" cx="17" cy="63" r="1.9" />
+        <circle className="date-blossom blossom-c" cx="86" cy="96" r="1.7" />
+        <g className="date-gear-signet" transform="translate(104 126)">
+          <circle r="15" />
+          <circle r="5.1" />
+          {Array.from({ length: 12 }, (_, index) => (
+            <line
+              key={index}
+              x1="0"
+              y1="-18.2"
+              x2="0"
+              y2="-14.6"
+              transform={`rotate(${index * 30})`}
+            />
+          ))}
+        </g>
+        <g className="date-vermilion-seals" transform="translate(112 148)">
+          <rect x="0" y="0" width="18" height="18" rx="1.2" />
+          <path d="M5 4 H13 M6 9 H12 M5 14 H13" />
+          <rect x="13" y="22" width="15" height="15" rx="1" />
+          <path d="M17 26 H24 M17 31 H23" />
+        </g>
+      </svg>
       <p className="panel-kicker">月読命</p>
       <h1 id="date-title">月読</h1>
       <p className="subtitle">墨暦からくり時計</p>
