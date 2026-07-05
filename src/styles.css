@@ -753,6 +753,20 @@
     stroke-dasharray: 2.5 4;
   }
 
+  .mechanism-threads {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.24);
+    stroke-width: 0.82;
+    stroke-linecap: round;
+    stroke-dasharray: 1.4 2.6;
+    filter: url(#ink-wobble);
+  }
+
+  .mechanism-threads .pale {
+    stroke: rgba(16, 17, 18, 0.15);
+    stroke-width: 0.64;
+  }
+
   .clock-gear {
     fill: rgba(16, 17, 18, 0.42);
     stroke: rgba(244, 240, 228, 0.42);
@@ -795,6 +809,39 @@
   .pinion-gear {
     fill: rgba(16, 17, 18, 0.36);
     opacity: 0.72;
+  }
+
+  .micro-gear-layer {
+    opacity: 0.88;
+    filter: drop-shadow(0 2px 3px rgba(16, 17, 18, 0.14));
+  }
+
+  .micro-gear {
+    fill: rgba(16, 17, 18, 0.46);
+    stroke: rgba(244, 240, 228, 0.34);
+    stroke-width: 0.42;
+  }
+
+  .micro-gear.pale {
+    fill: rgba(16, 17, 18, 0.32);
+    opacity: 0.78;
+  }
+
+  .micro-gear .gear-spoke {
+    stroke: rgba(244, 240, 228, 0.26);
+    stroke-width: 0.46;
+  }
+
+  .jewel-rivets circle {
+    fill: rgba(200, 155, 57, 0.86);
+    stroke: rgba(16, 17, 18, 0.58);
+    stroke-width: 0.42;
+    filter: drop-shadow(0 0 2px rgba(200, 155, 57, 0.2));
+  }
+
+  .jewel-rivets .faint {
+    fill: rgba(200, 155, 57, 0.5);
+    stroke: rgba(16, 17, 18, 0.32);
   }
 
   .outer-teeth {

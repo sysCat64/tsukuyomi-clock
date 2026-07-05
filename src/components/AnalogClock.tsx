@@ -34,6 +34,18 @@ type InkBristleSpec = {
   className: string;
 };
 
+type MechanismThreadSpec = {
+  d: string;
+  className?: string;
+};
+
+type RivetSpec = {
+  cx: number;
+  cy: number;
+  r: number;
+  className?: string;
+};
+
 const GEARS: GearSpec[] = [
   { cx: 160, cy: 160, r: 34, teeth: 26, className: "main-gear" },
   { cx: 126, cy: 154, r: 22, teeth: 20, className: "shadow-gear" },
@@ -46,6 +58,35 @@ const GEARS: GearSpec[] = [
   { cx: 128, cy: 235, r: 10, teeth: 12, className: "pinion-gear" },
   { cx: 222, cy: 250, r: 15, teeth: 16, className: "small-gear deep-gear" },
   { cx: 250, cy: 239, r: 10, teeth: 12, className: "pinion-gear" },
+];
+
+const MICRO_GEARS: GearSpec[] = [
+  { cx: 92, cy: 164, r: 7, teeth: 10, className: "micro-gear" },
+  { cx: 114, cy: 128, r: 8, teeth: 12, className: "micro-gear pale" },
+  { cx: 205, cy: 124, r: 7, teeth: 10, className: "micro-gear pale" },
+  { cx: 233, cy: 170, r: 7, teeth: 10, className: "micro-gear" },
+  { cx: 149, cy: 222, r: 6, teeth: 10, className: "micro-gear pale" },
+  { cx: 197, cy: 229, r: 6, teeth: 10, className: "micro-gear" },
+];
+
+const MECHANISM_THREADS: MechanismThreadSpec[] = [
+  { d: "M 91 164 C 116 138 139 132 160 160" },
+  { d: "M 115 128 C 138 115 176 114 206 124", className: "pale" },
+  { d: "M 194 148 C 214 150 228 156 233 170" },
+  { d: "M 128 235 C 146 224 178 222 198 229", className: "pale" },
+  { d: "M 160 160 C 167 181 177 204 197 229" },
+  { d: "M 108 190 C 123 208 137 217 150 222", className: "pale" },
+];
+
+const JEWEL_RIVETS: RivetSpec[] = [
+  { cx: 118, cy: 119, r: 1.7 },
+  { cx: 145, cy: 117, r: 1.25, className: "faint" },
+  { cx: 184, cy: 118, r: 1.25, className: "faint" },
+  { cx: 212, cy: 132, r: 1.65 },
+  { cx: 93, cy: 177, r: 1.45, className: "faint" },
+  { cx: 230, cy: 185, r: 1.45, className: "faint" },
+  { cx: 143, cy: 217, r: 1.5 },
+  { cx: 199, cy: 217, r: 1.5 },
 ];
 
 const INK_FLECKS: InkFleckSpec[] = [
@@ -343,9 +384,34 @@ export function AnalogClock({
           <path className="gear-bridge" d="M 119 207 C 145 183 180 183 207 207" />
           <path className="gear-bridge fine" d="M 95 226 C 144 248 206 250 254 224" />
           <path className="gear-bridge fine" d="M 91 198 C 130 223 189 224 227 197" />
+          <g className="mechanism-threads" aria-hidden="true">
+            {MECHANISM_THREADS.map((thread) => (
+              <path
+                key={`${thread.className ?? "thread"}-${thread.d}`}
+                className={thread.className}
+                d={thread.d}
+              />
+            ))}
+          </g>
           {GEARS.map((gear) => (
             <Gear key={`${gear.cx}-${gear.cy}`} spec={gear} />
           ))}
+          <g className="micro-gear-layer" aria-hidden="true">
+            {MICRO_GEARS.map((gear) => (
+              <Gear key={`${gear.cx}-${gear.cy}`} spec={gear} />
+            ))}
+          </g>
+          <g className="jewel-rivets" aria-hidden="true">
+            {JEWEL_RIVETS.map((rivet) => (
+              <circle
+                key={`${rivet.cx}-${rivet.cy}`}
+                className={rivet.className}
+                cx={rivet.cx}
+                cy={rivet.cy}
+                r={rivet.r}
+              />
+            ))}
+          </g>
         </g>
 
         <g ref={escapementRef} className="escapement">
