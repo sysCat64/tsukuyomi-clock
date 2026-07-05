@@ -3,6 +3,8 @@ import type { AstronomyState } from "../core/astronomy";
 import type { LocationPreset } from "../core/locations";
 import type { ClockState } from "../core/time";
 import { formatJstTime } from "../core/time";
+import panelWashiUrl from "../assets/tsukuyomi-panel-washi-overlay.png";
+import vermilionSealUrl from "../assets/tsukuyomi-vermilion-seal-overlay.png";
 
 type DatePanelProps = {
   clock: ClockState;
@@ -31,6 +33,7 @@ export function DatePanel({ clock }: DatePanelProps) {
   return (
     <section className="date-panel" aria-labelledby="date-title">
       <span className="date-ink-haze" aria-hidden="true" />
+      <img className="date-panel-seal-raster" src={vermilionSealUrl} alt="" aria-hidden="true" />
       <svg className="date-botanical-scroll" viewBox="0 0 152 190" aria-hidden="true" focusable="false">
         <path className="date-branch main" d="M22 178 C28 136 36 104 56 70 C67 50 79 33 98 14" />
         <path className="date-branch dry" d="M45 98 C34 88 24 77 17 62" />
@@ -89,6 +92,8 @@ export function DatePanel({ clock }: DatePanelProps) {
 export function AlmanacPanel({ almanac }: AlmanacPanelProps) {
   return (
     <section className="almanac-panel" aria-labelledby="almanac-title">
+      <img className="panel-washi-raster almanac" src={panelWashiUrl} alt="" aria-hidden="true" />
+      <img className="panel-seal-raster almanac" src={vermilionSealUrl} alt="" aria-hidden="true" />
       <div className="almanac-gold-seal" aria-hidden="true">
         {Array.from({ length: 16 }, (_, index) => (
           <i key={index} style={{ transform: `rotate(${index * 22.5}deg)` }} />
@@ -124,6 +129,8 @@ export function AlmanacPanel({ almanac }: AlmanacPanelProps) {
 export function AstroPanel({ astronomy, location }: AstroPanelProps) {
   return (
     <section className="astro-panel" aria-labelledby="astro-title">
+      <img className="panel-washi-raster astro" src={panelWashiUrl} alt="" aria-hidden="true" />
+      <img className="panel-seal-raster astro" src={vermilionSealUrl} alt="" aria-hidden="true" />
       <div className="section-heading">
         <p>{location.labelJa}</p>
         <h2 id="astro-title">日月のからくり</h2>

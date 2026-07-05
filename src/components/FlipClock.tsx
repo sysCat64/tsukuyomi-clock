@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import flipScuffUrl from "../assets/tsukuyomi-flip-scuff-overlay.png";
 import type { ClockState } from "../core/time";
 import { pad2 } from "../core/time";
 
@@ -16,6 +17,7 @@ export function FlipClock({ clock, reducedMotion }: FlipClockProps) {
   return (
     <section className="flip-clock" aria-label="パタパタ式デジタル時計">
       <span className="flip-case-shadow" aria-hidden="true" />
+      <img className="flip-scuff-raster" src={flipScuffUrl} alt="" aria-hidden="true" />
       <span className="flip-mechanism-chain left" aria-hidden="true">
         {SIDE_GEARS.map((gear) => (
           <i key={gear} />
