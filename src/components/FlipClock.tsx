@@ -9,10 +9,13 @@ type FlipClockProps = {
 };
 
 const SIDE_GEARS = [0, 1, 2, 3, 4];
+const CASE_RIVETS = Array.from({ length: 10 }, (_, index) => index);
+const CORNER_PLATES = Array.from({ length: 4 }, (_, index) => index);
 
 export function FlipClock({ clock, reducedMotion }: FlipClockProps) {
   return (
     <section className="flip-clock" aria-label="パタパタ式デジタル時計">
+      <span className="flip-case-shadow" aria-hidden="true" />
       <span className="flip-mechanism-chain left" aria-hidden="true">
         {SIDE_GEARS.map((gear) => (
           <i key={gear} />
@@ -44,6 +47,21 @@ export function FlipClock({ clock, reducedMotion }: FlipClockProps) {
         <circle className="sprig-blossom vermilion" cx="20" cy="20" r="2.6" />
       </svg>
       <span className="flip-vermilion-knot" aria-hidden="true" />
+      <span className="flip-case-rail top" aria-hidden="true">
+        {CASE_RIVETS.map((rivet) => (
+          <i key={rivet} />
+        ))}
+      </span>
+      <span className="flip-case-rail bottom" aria-hidden="true">
+        {CASE_RIVETS.map((rivet) => (
+          <i key={rivet} />
+        ))}
+      </span>
+      <span className="flip-corner-plates" aria-hidden="true">
+        {CORNER_PLATES.map((plate) => (
+          <i key={plate} />
+        ))}
+      </span>
       <span className="flip-frame-labels" aria-hidden="true">
         <span>時</span>
         <span>分</span>
