@@ -32,10 +32,10 @@ export function getAstronomyState(
   return {
     sunrise: validDateOrNull(times.sunrise),
     sunset: validDateOrNull(times.sunset),
-    sunAzimuth: radiansToDegrees(sunPosition.azimuth),
-    sunAltitude: radiansToDegrees(sunPosition.altitude),
-    moonAzimuth: radiansToDegrees(moonPosition.azimuth),
-    moonAltitude: radiansToDegrees(moonPosition.altitude),
+    sunAzimuth: radiansToNormalizedDegrees(sunPosition.azimuth),
+    sunAltitude: radiansToSignedDegrees(sunPosition.altitude),
+    moonAzimuth: radiansToNormalizedDegrees(moonPosition.azimuth),
+    moonAltitude: radiansToSignedDegrees(moonPosition.altitude),
     moonPhase: getMoonPhaseLabel(moonAge),
     moonAgeLabel: `${moonAge.toFixed(1)}夜`,
     moonAge,
@@ -87,8 +87,12 @@ function validDateOrNull(value?: Date): Date | null {
   return value && !Number.isNaN(value.getTime()) ? value : null;
 }
 
-function radiansToDegrees(radians: number): number {
+function radiansToNormalizedDegrees(radians: number): number {
   return normalizeDegrees((radians * 180) / Math.PI);
+}
+
+function radiansToSignedDegrees(radians: number): number {
+  return (radians * 180) / Math.PI;
 }
 
 function normalizeDegrees(value: number): number {
