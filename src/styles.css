@@ -974,6 +974,34 @@
     opacity: 0.32;
   }
 
+  .raster-enso-brush,
+  .raster-gear-shadow,
+  .raster-moon-surface {
+    pointer-events: none;
+  }
+
+  .raster-enso-brush {
+    opacity: 0.28;
+    mix-blend-mode: multiply;
+    filter: saturate(0.08) contrast(1.08);
+  }
+
+  .raster-gear-shadow {
+    opacity: 0.16;
+    mix-blend-mode: multiply;
+    filter: saturate(0.64) contrast(0.92);
+  }
+
+  .raster-moon-surface {
+    opacity: 0.34;
+    mix-blend-mode: screen;
+    filter: saturate(0.78) contrast(0.86);
+  }
+
+  .raster-moon-surface.lens {
+    opacity: 0.46;
+  }
+
   .sun-arc {
     fill: none;
     stroke: url(#gold-line);

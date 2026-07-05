@@ -1,5 +1,8 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import ensoBrushUrl from "../assets/tsukuyomi-enso-brush-overlay.png";
+import gearShadowUrl from "../assets/tsukuyomi-gear-shadow-overlay.png";
+import moonSurfaceUrl from "../assets/tsukuyomi-moon-surface-overlay.png";
 import type { AstronomyState } from "../core/astronomy";
 import type { ClockState } from "../core/time";
 import { getAnalogAngles } from "../core/time";
@@ -268,6 +271,12 @@ export function AnalogClock({
             <stop offset="0%" stopColor="#111" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#111" stopOpacity="0" />
           </radialGradient>
+          <clipPath id="moon-window-disc-clip">
+            <circle cx="238" cy="90" r="24" />
+          </clipPath>
+          <clipPath id="moon-lens-disc-clip">
+            <circle cx="235" cy="218" r="30" />
+          </clipPath>
         </defs>
 
         <circle className="enso-shadow" cx="160" cy="160" r="129" />
@@ -303,6 +312,16 @@ export function AnalogClock({
             />
           ))}
         </g>
+        <image
+          className="raster-enso-brush"
+          href={ensoBrushUrl}
+          x="22"
+          y="20"
+          width="276"
+          height="276"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+        />
         <g className="enso-splatter" aria-hidden="true">
           {INK_FLECKS.map((fleck) => (
             <ellipse
@@ -365,6 +384,17 @@ export function AnalogClock({
           <circle cx="238" cy="90" r="30" fill="url(#moon-glow)" />
           <circle className="moon-frame" cx="238" cy="90" r="27" />
           <path className="moon-window-paper" d="M 218 76 C 226 66 246 64 256 77 L 256 107 C 245 118 225 116 217 105 Z" />
+          <image
+            className="raster-moon-surface window"
+            href={moonSurfaceUrl}
+            x="214"
+            y="66"
+            width="48"
+            height="48"
+            clipPath="url(#moon-window-disc-clip)"
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden="true"
+          />
           <line className="moon-lattice" x1="220" y1="72" x2="220" y2="108" />
           <line className="moon-lattice" x1="228" y1="66" x2="228" y2="114" />
           <line className="moon-lattice fine" x1="237" y1="64" x2="237" y2="116" />
@@ -391,6 +421,17 @@ export function AnalogClock({
             className="moon-lens-disc"
             d="M 236 188 A 30 30 0 1 0 236 248 A 17 30 0 1 1 236 188"
           />
+          <image
+            className="raster-moon-surface lens"
+            href={moonSurfaceUrl}
+            x="205"
+            y="188"
+            width="60"
+            height="60"
+            clipPath="url(#moon-lens-disc-clip)"
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden="true"
+          />
           <path className="moon-lens-haze" d="M 214 226 C 229 215 246 213 263 221" />
           <path className="moon-lens-branch" d="M 218 235 C 229 226 239 225 251 232" />
           <circle className="moon-lens-blossom" cx="252" cy="231" r="2.6" />
@@ -409,6 +450,16 @@ export function AnalogClock({
         </g>
 
         <g ref={gearRef} className="gear-ring">
+          <image
+            className="raster-gear-shadow"
+            href={gearShadowUrl}
+            x="60"
+            y="88"
+            width="220"
+            height="214"
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden="true"
+          />
           <circle className="gear-smoke" cx="160" cy="166" r="76" fill="url(#gear-smoke)" />
           <g className="mechanism-plates" aria-hidden="true">
             <path d="M 82 214 C 110 188 132 190 158 207 L 151 236 C 121 244 96 237 82 214 Z" />
