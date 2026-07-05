@@ -18,13 +18,6 @@ export const TOKYO_LOCATION: LocationPreset = {
 export const LOCATION_PRESETS: LocationPreset[] = [
   TOKYO_LOCATION,
   {
-    id: "kyoto",
-    labelJa: "京都",
-    latitude: 35.011564,
-    longitude: 135.768149,
-    timezone: "Asia/Tokyo",
-  },
-  {
     id: "sapporo",
     labelJa: "札幌",
     latitude: 43.061771,
@@ -43,6 +36,13 @@ export const LOCATION_PRESETS: LocationPreset[] = [
     labelJa: "奈良",
     latitude: 34.685087,
     longitude: 135.805,
+    timezone: "Asia/Tokyo",
+  },
+  {
+    id: "kyoto",
+    labelJa: "京都",
+    latitude: 35.011564,
+    longitude: 135.768149,
     timezone: "Asia/Tokyo",
   },
   {

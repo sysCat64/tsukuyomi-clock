@@ -570,17 +570,6 @@ export function AnalogClock({
           </g>
           <circle className="hand-pin" cx="160" cy="160" r="6" />
         </g>
-
-        <g ref={windowRef} className="karakuri-window">
-          <path d="M 109 52 Q 160 33 211 52 L 203 76 Q 160 64 117 76 Z" />
-          <text x="160" y="64" textAnchor="middle">
-            月読命
-          </text>
-        </g>
-
-        <text ref={sealRef} className="seal-mark" x="222" y="244">
-          月読
-        </text>
       </svg>
     </section>
   );

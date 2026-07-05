@@ -615,7 +615,6 @@
   }
 
   .date-panel::after {
-    content: "月読";
     position: absolute;
     inset-block-start: clamp(4rem, 7vw, 5.35rem);
     inset-inline-start: clamp(11rem, 16vw, 13.75rem);
