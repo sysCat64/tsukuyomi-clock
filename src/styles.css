@@ -76,7 +76,7 @@
     min-block-size: 100dvh;
     display: grid;
     place-items: center;
-    padding: clamp(0.45rem, 1vw, 0.85rem);
+    padding: clamp(0.18rem, 0.48vw, 0.38rem);
   }
 
   .tsukuyomi-app::before,
@@ -134,15 +134,15 @@
   .scroll-frame {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(12.5rem, 0.72fr) minmax(23rem, 1.33fr) minmax(16rem, 0.86fr);
+    grid-template-columns: minmax(12.2rem, 0.68fr) minmax(24.5rem, 1.45fr) minmax(16rem, 0.84fr);
     grid-template-rows: auto auto;
     grid-template-areas:
       "date clock side"
       "lower lower side";
-    gap: clamp(0.7rem, 1.5vw, 1.15rem);
+    gap: clamp(0.55rem, 1.1vw, 0.88rem);
     inline-size: min(100%, 78.5rem);
     min-block-size: auto;
-    padding: clamp(0.7rem, 1.25vw, 1.05rem);
+    padding: clamp(0.58rem, 1vw, 0.82rem);
     background:
       radial-gradient(circle at 45% 34%, rgba(11, 11, 11, 0.08), transparent 23rem),
       radial-gradient(circle at 39% 43%, rgba(16, 17, 18, 0.12), transparent 14rem),
@@ -171,11 +171,11 @@
   }
 
   .scroll-frame::before {
-    inset-block-start: -0.65rem;
+    inset-block-start: -0.45rem;
   }
 
   .scroll-frame::after {
-    inset-block-end: -0.65rem;
+    inset-block-end: -0.45rem;
   }
 
   .composition-wash {
@@ -327,11 +327,13 @@
   }
 
   .ground-ridge {
-    fill: rgba(16, 17, 18, 0.11);
+    fill: rgba(16, 17, 18, 0.075);
+    filter: blur(0.3px);
   }
 
   .ground-ridge.deep {
-    fill: rgba(16, 17, 18, 0.18);
+    fill: rgba(16, 17, 18, 0.13);
+    filter: blur(0.2px);
   }
 
   .ground-dry {
@@ -342,6 +344,48 @@
 
   .ground-bamboo {
     opacity: 0.58;
+  }
+
+  .ground-center {
+    opacity: 0.68;
+  }
+
+  .ground-center-wash {
+    fill: rgba(16, 17, 18, 0.06);
+    filter: blur(0.25px);
+  }
+
+  .ground-reed {
+    fill: none;
+    stroke: rgba(16, 17, 18, 0.28);
+    stroke-width: 1.55;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ground-reed.thin {
+    stroke-width: 0.92;
+    opacity: 0.72;
+  }
+
+  .ground-leaf {
+    fill: rgba(111, 143, 79, 0.25);
+    stroke: rgba(16, 17, 18, 0.28);
+    stroke-width: 0.72;
+  }
+
+  .ground-leaf.alt {
+    fill: rgba(111, 143, 79, 0.2);
+  }
+
+  .ground-gold-fleck {
+    fill: rgba(200, 155, 57, 0.7);
+    stroke: rgba(112, 77, 22, 0.24);
+    stroke-width: 0.32;
+  }
+
+  .ground-gold-fleck.pale {
+    opacity: 0.54;
   }
 
   .ground-horizon {
@@ -755,7 +799,7 @@
     grid-area: clock;
     align-self: center;
     justify-self: center;
-    inline-size: min(100%, clamp(21rem, 33.5vw, 27.2rem));
+    inline-size: min(100%, clamp(22.5rem, 36.2vw, 29.4rem));
     aspect-ratio: 1;
     display: grid;
     place-items: center;
@@ -1469,13 +1513,36 @@
   .astro-panel,
   .almanac-panel {
     position: relative;
+    isolation: isolate;
     padding: 0.64rem 0.72rem;
+  }
+
+  .astro-panel > *,
+  .almanac-panel > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .astro-panel::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0.15rem 0.35rem;
+    inset-block: 2.8rem 1.05rem;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse at 72% 28%, rgba(31, 61, 115, 0.055), transparent 54%),
+      radial-gradient(ellipse at 52% 72%, rgba(16, 17, 18, 0.075), transparent 58%),
+      linear-gradient(168deg, transparent 0 49%, rgba(16, 17, 18, 0.055) 50% 53%, transparent 58%);
+    mix-blend-mode: multiply;
+    opacity: 0.95;
   }
 
   .astro-panel::after,
   .almanac-panel::after {
     content: "";
     position: absolute;
+    z-index: 0;
     pointer-events: none;
     mix-blend-mode: multiply;
   }
@@ -1528,7 +1595,7 @@
     display: block;
     inline-size: 100%;
     block-size: auto;
-    max-block-size: 6.45rem;
+    max-block-size: 7.1rem;
   }
 
   .sky-dial-wash {

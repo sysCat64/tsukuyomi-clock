@@ -168,6 +168,17 @@ function CompositionGround() {
         <circle className="ground-blossom" cx="126" cy="536" r="2.8" />
         <circle className="ground-blossom pale" cx="80" cy="548" r="2.2" />
       </g>
+      <g className="ground-center">
+        <path className="ground-center-wash" d="M 426 642 C 468 610 516 618 552 588 C 592 554 640 572 676 610 C 628 638 532 648 426 642 Z" />
+        <path className="ground-reed" d="M 500 650 C 508 620 518 596 536 568" />
+        <path className="ground-reed thin" d="M 520 654 C 526 624 540 601 560 580" />
+        <path className="ground-reed" d="M 590 653 C 583 618 575 596 558 569" />
+        <path className="ground-reed thin" d="M 610 650 C 618 622 632 599 654 581" />
+        <path className="ground-leaf" d="M 528 599 C 503 594 485 581 475 558 C 501 562 521 575 528 599 Z" />
+        <path className="ground-leaf alt" d="M 583 606 C 612 593 634 591 660 600 C 638 619 611 623 583 606 Z" />
+        <circle className="ground-gold-fleck" cx="566" cy="576" r="2.1" />
+        <circle className="ground-gold-fleck pale" cx="642" cy="590" r="1.5" />
+      </g>
       <g className="ground-right">
         <path className="ground-mist" d="M 936 600 C 980 570 1026 580 1068 552 C 1114 522 1166 548 1214 586 C 1166 616 1040 624 936 600 Z" />
         <path className="ground-ridge" d="M 900 632 C 950 600 995 617 1044 588 C 1094 559 1130 577 1176 603 C 1212 624 1260 614 1308 588 L 1308 680 L 900 680 Z" />
