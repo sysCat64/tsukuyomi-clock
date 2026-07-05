@@ -21,6 +21,39 @@ type InkStroke = {
   alpha: number;
 };
 
+type InkCloud = {
+  x: number;
+  y: number;
+  radius: number;
+  stretch: number;
+  alpha: number;
+};
+
+type WashThread = {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  bend: number;
+  alpha: number;
+};
+
+const COMPOSITION_CLOUDS: InkCloud[] = [
+  { x: 0.12, y: 0.31, radius: 0.22, stretch: 1.7, alpha: 0.07 },
+  { x: 0.31, y: 0.34, radius: 0.28, stretch: 2.3, alpha: 0.052 },
+  { x: 0.55, y: 0.28, radius: 0.25, stretch: 2.1, alpha: 0.044 },
+  { x: 0.77, y: 0.43, radius: 0.2, stretch: 1.8, alpha: 0.048 },
+  { x: 0.86, y: 0.81, radius: 0.2, stretch: 1.9, alpha: 0.058 },
+];
+
+const WASH_THREADS: WashThread[] = [
+  { startX: 0.06, startY: 0.35, endX: 0.38, endY: 0.31, bend: -0.12, alpha: 0.075 },
+  { startX: 0.24, startY: 0.42, endX: 0.68, endY: 0.31, bend: 0.1, alpha: 0.052 },
+  { startX: 0.47, startY: 0.27, endX: 0.88, endY: 0.4, bend: -0.09, alpha: 0.045 },
+  { startX: 0.04, startY: 0.76, endX: 0.42, endY: 0.72, bend: 0.06, alpha: 0.05 },
+  { startX: 0.53, startY: 0.82, endX: 0.97, endY: 0.75, bend: 0.08, alpha: 0.058 },
+];
+
 export function InkCanvas({ reducedMotion, moonIllumination }: InkCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const particlesRef = useRef<Particle[]>(Array.from({ length: 96 }, () => makeParticle()));
@@ -58,6 +91,7 @@ export function InkCanvas({ reducedMotion, moonIllumination }: InkCanvasProps) {
 
       drawMist(context, rect.width, rect.height, moonIllumination, timestamp);
       drawInkMargins(context, rect.width, rect.height, timestamp);
+      drawCompositionClouds(context, rect.width, rect.height, timestamp);
       drawInkBloom(context, rect.width, rect.height, timestamp);
       drawSeasonGround(context, rect.width, rect.height, timestamp);
       drawBrushStrokes(context, strokes, rect.width, rect.height, timestamp);
@@ -154,6 +188,69 @@ function drawInkMargins(
   rightMist.addColorStop(1, "rgba(31, 61, 115, 0)");
   context.fillStyle = rightMist;
   context.fillRect(0, 0, width, height);
+}
+
+function drawCompositionClouds(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  timestamp: number,
+) {
+  const breath = 0.94 + Math.sin(timestamp / 6100) * 0.06;
+  const drift = Math.sin(timestamp / 7800) * width * 0.008;
+  const baseSize = Math.min(width, height);
+
+  context.save();
+  context.globalCompositeOperation = "multiply";
+
+  for (const cloud of COMPOSITION_CLOUDS) {
+    const centerX = width * cloud.x + drift * (cloud.x > 0.5 ? -1 : 1);
+    const centerY = height * cloud.y + Math.sin(timestamp / 5400 + cloud.x * 8) * height * 0.006;
+    const radius = baseSize * cloud.radius * breath;
+    const gradient = context.createRadialGradient(
+      centerX,
+      centerY,
+      0,
+      centerX,
+      centerY,
+      radius * cloud.stretch,
+    );
+
+    gradient.addColorStop(0, `rgba(12, 13, 14, ${cloud.alpha})`);
+    gradient.addColorStop(0.45, `rgba(12, 13, 14, ${cloud.alpha * 0.44})`);
+    gradient.addColorStop(0.74, `rgba(12, 13, 14, ${cloud.alpha * 0.15})`);
+    gradient.addColorStop(1, "rgba(12, 13, 14, 0)");
+    context.fillStyle = gradient;
+    context.fillRect(centerX - radius * cloud.stretch, centerY - radius, radius * cloud.stretch * 2, radius * 2);
+  }
+
+  context.lineCap = "round";
+  context.lineJoin = "round";
+
+  for (const thread of WASH_THREADS) {
+    const startX = width * thread.startX;
+    const startY = height * thread.startY;
+    const endX = width * thread.endX;
+    const endY = height * thread.endY;
+    const controlX = (startX + endX) / 2;
+    const controlY = (startY + endY) / 2 + height * thread.bend + Math.sin(timestamp / 6600) * 4;
+
+    context.beginPath();
+    context.strokeStyle = `rgba(16, 17, 18, ${thread.alpha})`;
+    context.lineWidth = Math.max(1.1, baseSize * 0.0038);
+    context.moveTo(startX, startY);
+    context.quadraticCurveTo(controlX, controlY, endX, endY);
+    context.stroke();
+
+    context.beginPath();
+    context.strokeStyle = `rgba(16, 17, 18, ${thread.alpha * 0.38})`;
+    context.lineWidth = Math.max(2.6, baseSize * 0.0072);
+    context.moveTo(startX + width * 0.012, startY + height * 0.012);
+    context.quadraticCurveTo(controlX, controlY + height * 0.026, endX - width * 0.012, endY + height * 0.01);
+    context.stroke();
+  }
+
+  context.restore();
 }
 
 function drawSeasonGround(
