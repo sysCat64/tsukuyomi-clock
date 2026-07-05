@@ -178,6 +178,24 @@
     inset-block-end: -0.45rem;
   }
 
+  .raster-washi-landscape {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center center;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.34;
+    mix-blend-mode: multiply;
+    filter: saturate(0.78) contrast(0.96);
+  }
+
+  .raster-washi-landscape::selection {
+    background: transparent;
+  }
+
   .composition-wash {
     position: absolute;
     inset: 0;
@@ -2582,6 +2600,11 @@
       opacity: 0.34;
     }
 
+    .raster-washi-landscape {
+      opacity: 0.24;
+      object-position: 48% 38%;
+    }
+
     .composition-sun {
       display: none;
     }
@@ -2715,6 +2738,11 @@
 
     .composition-ground {
       display: none;
+    }
+
+    .raster-washi-landscape {
+      opacity: 0.18;
+      object-position: 45% top;
     }
 
     .date-panel {

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import washiLandscapeUrl from "./assets/tsukuyomi-washi-landscape.png";
 import { AnalogClock } from "./components/AnalogClock";
 import { FlipClock } from "./components/FlipClock";
 import { InkCanvas } from "./components/InkCanvas";
@@ -105,6 +106,12 @@ export default function App() {
       />
       <div className="paper-grain" aria-hidden="true" />
       <div className="scroll-frame">
+        <img
+          className="raster-washi-landscape"
+          src={washiLandscapeUrl}
+          alt=""
+          aria-hidden="true"
+        />
         <div className="composition-wash" aria-hidden="true">
           <i className="wash-band clock-haze" />
           <i className="wash-band lower-haze" />
