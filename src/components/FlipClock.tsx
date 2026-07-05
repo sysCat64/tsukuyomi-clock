@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import flipScuffUrl from "../assets/tsukuyomi-flip-scuff-overlay.png";
 import type { ClockState } from "../core/time";
@@ -6,6 +6,17 @@ import { pad2 } from "../core/time";
 
 type FlipClockProps = {
   clock: ClockState;
+  reducedMotion: boolean;
+};
+
+type FlipGroupProps = {
+  value: string;
+  label: string;
+  reducedMotion: boolean;
+};
+
+type FlipDigitProps = {
+  value: string;
   reducedMotion: boolean;
 };
 
@@ -84,48 +95,174 @@ export function FlipClock({ clock, reducedMotion }: FlipClockProps) {
         <i />
         <i />
       </span>
-      <FlipUnit value={pad2(clock.hours)} label="時" reducedMotion={reducedMotion} />
+      <FlipGroup value={pad2(clock.hours)} label="時" reducedMotion={reducedMotion} />
       <span className="flip-separator" aria-hidden="true">
         :
       </span>
-      <FlipUnit value={pad2(clock.minutes)} label="分" reducedMotion={reducedMotion} />
+      <FlipGroup value={pad2(clock.minutes)} label="分" reducedMotion={reducedMotion} />
       <span className="flip-separator" aria-hidden="true">
         :
       </span>
-      <FlipUnit value={pad2(clock.seconds)} label="秒" reducedMotion={reducedMotion} />
+      <FlipGroup value={pad2(clock.seconds)} label="秒" reducedMotion={reducedMotion} />
     </section>
   );
 }
 
-function FlipUnit({
-  value,
-  label,
-  reducedMotion,
-}: {
-  value: string;
-  label: string;
-  reducedMotion: boolean;
-}) {
-  const ref = useRef<HTMLSpanElement | null>(null);
-
-  useEffect(() => {
-    if (!ref.current || reducedMotion) {
-      return;
-    }
-
-    gsap.fromTo(
-      ref.current,
-      { rotateX: -86, y: -4, opacity: 0.64, transformOrigin: "50% 100%" },
-      { rotateX: 0, y: 0, opacity: 1, duration: 0.42, ease: "power3.out" },
-    );
-  }, [value, reducedMotion]);
+function FlipGroup({ value, label, reducedMotion }: FlipGroupProps) {
+  const digits = value.split("");
 
   return (
     <span className="flip-unit" aria-label={`${value}${label}`}>
-      <span ref={ref} className="flip-value">
-        {value}
+      <span className="flip-digit-row" aria-hidden="true">
+        {digits.map((digit, index) => (
+          <FlipDigit
+            key={`${label}-${index}`}
+            value={digit}
+            reducedMotion={reducedMotion}
+          />
+        ))}
       </span>
       <span className="flip-label">{label}</span>
+    </span>
+  );
+}
+
+function FlipDigit({ value, reducedMotion }: FlipDigitProps) {
+  const [displayValue, setDisplayValue] = useState(value);
+  const [previousValue, setPreviousValue] = useState(value);
+  const [isFlipping, setIsFlipping] = useState(false);
+  const digitRef = useRef<HTMLSpanElement | null>(null);
+  const oldTopRef = useRef<HTMLSpanElement | null>(null);
+  const oldBottomRef = useRef<HTMLSpanElement | null>(null);
+  const newBottomRef = useRef<HTMLSpanElement | null>(null);
+  const hingeShadowRef = useRef<HTMLSpanElement | null>(null);
+
+  useEffect(() => {
+    if (value === displayValue) {
+      if (reducedMotion && isFlipping) {
+        setPreviousValue(value);
+        setIsFlipping(false);
+      }
+      return;
+    }
+
+    if (reducedMotion) {
+      setPreviousValue(value);
+      setDisplayValue(value);
+      setIsFlipping(false);
+      return;
+    }
+
+    setPreviousValue(displayValue);
+    setDisplayValue(value);
+    setIsFlipping(true);
+  }, [displayValue, isFlipping, reducedMotion, value]);
+
+  useLayoutEffect(() => {
+    if (
+      !isFlipping ||
+      reducedMotion ||
+      !digitRef.current ||
+      !oldTopRef.current ||
+      !oldBottomRef.current ||
+      !newBottomRef.current ||
+      !hingeShadowRef.current
+    ) {
+      return;
+    }
+
+    const resetAnimatedParts = () => {
+      gsap.set([oldTopRef.current, newBottomRef.current, hingeShadowRef.current], {
+        clearProps: "opacity,transform,zIndex",
+      });
+      gsap.set(digitRef.current, { clearProps: "transform" });
+    };
+
+    const timeline = gsap.timeline({
+      defaults: { ease: "power2.inOut" },
+      onComplete: () => {
+        resetAnimatedParts();
+        setPreviousValue(displayValue);
+        setIsFlipping(false);
+      },
+    });
+
+    gsap.set(digitRef.current, {
+      transformOrigin: "50% 50%",
+      transformPerspective: 760,
+    });
+    gsap.set(oldTopRef.current, {
+      opacity: 1,
+      rotateX: 0,
+      transformOrigin: "50% 100%",
+      transformPerspective: 760,
+      zIndex: 6,
+    });
+    gsap.set(oldBottomRef.current, { opacity: 1, zIndex: 3 });
+    gsap.set(newBottomRef.current, {
+      opacity: 1,
+      rotateX: 92,
+      transformOrigin: "50% 0%",
+      transformPerspective: 760,
+      zIndex: 7,
+    });
+    gsap.set(hingeShadowRef.current, { opacity: 0, scaleY: 0.65 });
+
+    timeline
+      .to(digitRef.current, { y: -1.5, duration: 0.08, ease: "sine.out" }, 0)
+      .to(
+        hingeShadowRef.current,
+        { opacity: 0.85, scaleY: 1, duration: 0.16, ease: "power1.out" },
+        0,
+      )
+      .to(
+        oldTopRef.current,
+        { rotateX: -93, duration: 0.24, ease: "power3.in" },
+        0.02,
+      )
+      .to(oldBottomRef.current, { opacity: 0, duration: 0.04 }, 0.22)
+      .to(
+        newBottomRef.current,
+        { rotateX: 0, duration: 0.28, ease: "back.out(1.9)" },
+        0.22,
+      )
+      .to(
+        hingeShadowRef.current,
+        { opacity: 0.18, scaleY: 0.5, duration: 0.2, ease: "sine.out" },
+        0.34,
+      )
+      .to(digitRef.current, { y: 0, duration: 0.16, ease: "sine.out" }, 0.38);
+
+    return () => {
+      timeline.kill();
+      resetAnimatedParts();
+    };
+  }, [displayValue, isFlipping, reducedMotion]);
+
+  return (
+    <span
+      ref={digitRef}
+      className="flip-digit"
+      data-flipping={isFlipping ? "true" : "false"}
+    >
+      <span className="flip-card flip-card-top">
+        <span className="flip-value">{displayValue}</span>
+      </span>
+      <span className="flip-card flip-card-bottom">
+        <span className="flip-value">{displayValue}</span>
+      </span>
+      {isFlipping ? (
+        <span ref={oldBottomRef} className="flip-card flip-card-bottom flip-card-old-bottom">
+          <span className="flip-value">{previousValue}</span>
+        </span>
+      ) : null}
+      <span ref={oldTopRef} className="flip-flap flip-flap-old-top">
+        <span className="flip-value">{previousValue}</span>
+      </span>
+      <span ref={newBottomRef} className="flip-flap flip-flap-new-bottom">
+        <span className="flip-value">{displayValue}</span>
+      </span>
+      <span ref={hingeShadowRef} className="flip-hinge-shadow" />
     </span>
   );
 }

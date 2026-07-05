@@ -2530,10 +2530,12 @@
     position: relative;
     display: grid;
     place-items: center;
-    min-inline-size: clamp(4rem, 7vw, 5.35rem);
-    min-block-size: clamp(3.55rem, 5.6vw, 4.35rem);
+    inline-size: clamp(4rem, 7vw, 5.35rem);
+    min-block-size: clamp(3.78rem, 5.9vw, 4.56rem);
+    padding: 0.12rem 0.16rem 0.76rem;
     color: var(--vermilion);
     z-index: 2;
+    perspective: 900px;
   }
 
   .flip-unit::before {
@@ -2551,20 +2553,167 @@
       inset 0 0 18px rgba(0, 0, 0, 0.5);
   }
 
-  .flip-value {
+  .flip-digit-row {
     position: relative;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: clamp(0.1rem, 0.34vw, 0.18rem);
+    inline-size: 100%;
+  }
+
+  .flip-digit {
+    position: relative;
+    inline-size: clamp(1.64rem, 3.1vw, 2.27rem);
+    block-size: clamp(3.04rem, 5vw, 3.9rem);
+    border-radius: 4px;
+    transform-style: preserve-3d;
+    perspective: 760px;
+    filter: drop-shadow(0 0.18rem 0.24rem rgba(0, 0, 0, 0.32));
+    isolation: isolate;
+  }
+
+  .flip-digit::before,
+  .flip-digit::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0.12rem;
+    inset-block-start: calc(50% - 1px);
+    block-size: 1px;
+    z-index: 8;
+    pointer-events: none;
+  }
+
+  .flip-digit::before {
+    background: rgba(250, 247, 236, 0.18);
+    box-shadow:
+      0 -1px rgba(0, 0, 0, 0.58),
+      0 1px rgba(200, 155, 57, 0.22);
+  }
+
+  .flip-digit::after {
+    inset-inline: 0.28rem;
+    border-inline: 2px solid rgba(200, 155, 57, 0.38);
+    opacity: 0.88;
+  }
+
+  .flip-card,
+  .flip-flap {
+    position: absolute;
+    inset-inline: 0;
+    block-size: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(4, 4, 4, 0.74);
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(250, 247, 236, 0.12), transparent 44%),
+      linear-gradient(90deg, rgba(250, 247, 236, 0.06), transparent 18% 82%, rgba(250, 247, 236, 0.05)),
+      linear-gradient(#202020, #111);
+    box-shadow:
+      inset 0 1px rgba(250, 247, 236, 0.14),
+      inset 0 -0.35rem 0.72rem rgba(0, 0, 0, 0.36);
+  }
+
+  .flip-card-top,
+  .flip-flap-old-top {
+    inset-block-start: 0;
+    border-radius: 4px 4px 2px 2px;
+    transform-origin: 50% 100%;
+  }
+
+  .flip-card-bottom,
+  .flip-flap-new-bottom,
+  .flip-card-old-bottom {
+    inset-block-end: 0;
+    border-radius: 2px 2px 4px 4px;
+    transform-origin: 50% 0%;
+  }
+
+  .flip-card-top {
+    z-index: 2;
+  }
+
+  .flip-card-bottom {
+    z-index: 1;
+    background:
+      radial-gradient(circle at 50% 100%, rgba(250, 247, 236, 0.1), transparent 46%),
+      linear-gradient(90deg, rgba(250, 247, 236, 0.04), transparent 18% 82%, rgba(250, 247, 236, 0.04)),
+      linear-gradient(#151515, #202020);
+  }
+
+  .flip-card-old-bottom {
+    z-index: 3;
+  }
+
+  .flip-flap {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  .flip-digit[data-flipping="true"] .flip-flap {
+    opacity: 1;
+  }
+
+  .flip-flap-old-top {
+    z-index: 6;
+  }
+
+  .flip-flap-new-bottom {
+    z-index: 7;
+    transform: rotateX(92deg);
+    background:
+      radial-gradient(circle at 50% 100%, rgba(250, 247, 236, 0.14), transparent 48%),
+      linear-gradient(90deg, rgba(250, 247, 236, 0.04), transparent 18% 82%, rgba(250, 247, 236, 0.04)),
+      linear-gradient(#111, #202020);
+  }
+
+  .flip-value {
+    position: absolute;
+    inset-inline: 0;
+    block-size: 200%;
+    display: grid;
+    place-items: center;
     color: rgba(248, 244, 230, 0.93);
     font-family: var(--font-display);
-    font-size: clamp(1.9rem, 4.15vw, 2.7rem);
+    font-size: clamp(1.95rem, 4.05vw, 2.72rem);
     line-height: 1;
     font-variant-numeric: tabular-nums;
+    text-shadow:
+      0 1px rgba(0, 0, 0, 0.78),
+      0 0 0.42rem rgba(184, 58, 34, 0.18);
+  }
+
+  .flip-card-top .flip-value,
+  .flip-flap-old-top .flip-value {
+    inset-block-start: 0;
+  }
+
+  .flip-card-bottom .flip-value,
+  .flip-flap-new-bottom .flip-value,
+  .flip-card-old-bottom .flip-value {
+    inset-block-end: 0;
+  }
+
+  .flip-hinge-shadow {
+    position: absolute;
+    inset-inline: 0.14rem;
+    inset-block-start: calc(50% - 0.3rem);
+    block-size: 0.6rem;
+    z-index: 9;
+    pointer-events: none;
+    opacity: 0;
+    transform-origin: 50% 50%;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.66), transparent 72%),
+      linear-gradient(transparent, rgba(250, 247, 236, 0.16), transparent);
+    mix-blend-mode: multiply;
   }
 
   .flip-label {
     position: absolute;
-    z-index: 1;
-    inset-block-end: 0.45rem;
+    z-index: 2;
+    inset-block-end: 0.34rem;
     color: rgba(248, 244, 230, 0.68);
     font-size: 0.62rem;
   }
@@ -2917,7 +3066,18 @@
     }
 
     .flip-unit {
-      min-inline-size: 3.35rem;
+      inline-size: 3.35rem;
+      min-block-size: 3.38rem;
+      padding: 0.1rem 0.12rem 0.68rem;
+    }
+
+    .flip-digit {
+      inline-size: 1.42rem;
+      block-size: 2.72rem;
+    }
+
+    .flip-value {
+      font-size: 1.78rem;
     }
 
     .rehearsal-panel {
